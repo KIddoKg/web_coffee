@@ -84,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "ice_blended_drink":
             MessageLookupByLibrary.simpleMessage("Ice Blended"),
+        "info": MessageLookupByLibrary.simpleMessage("Information"),
         "juice_apple": MessageLookupByLibrary.simpleMessage("Apple Juice"),
         "juice_drink": MessageLookupByLibrary.simpleMessage("Fresh Juice"),
         "juice_guava": MessageLookupByLibrary.simpleMessage("Guava Juice"),
@@ -130,6 +131,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "smoothie_strawberry":
             MessageLookupByLibrary.simpleMessage("Strawberry Smoothie"),
         "soda_lemon": MessageLookupByLibrary.simpleMessage("Lemon Soda"),
+        "thanks": MessageLookupByLibrary.simpleMessage(
+            "Thank you for your order! Please copy it below and send via Zalo."),
         "title_coffee": MessageLookupByLibrary.simpleMessage("New coffee"),
         "total_pay": MessageLookupByLibrary.simpleMessage("Total pay"),
         "total_product": MessageLookupByLibrary.simpleMessage("Total products"),

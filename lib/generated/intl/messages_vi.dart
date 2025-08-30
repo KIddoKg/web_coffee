@@ -81,6 +81,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Trà bí đao"),
         "home": MessageLookupByLibrary.simpleMessage("Trang chủ"),
         "ice_blended_drink": MessageLookupByLibrary.simpleMessage("Đá xay"),
+        "info": MessageLookupByLibrary.simpleMessage("Thông tin"),
         "juice_apple": MessageLookupByLibrary.simpleMessage("Ép táo"),
         "juice_drink": MessageLookupByLibrary.simpleMessage("Nước ép"),
         "juice_guava": MessageLookupByLibrary.simpleMessage("Ép ổi"),
@@ -123,6 +124,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "smoothie_strawberry":
             MessageLookupByLibrary.simpleMessage("Sinh tố dâu"),
         "soda_lemon": MessageLookupByLibrary.simpleMessage("Soda chanh"),
+        "thanks": MessageLookupByLibrary.simpleMessage(
+            "Cảm ơn bạn đã đặt hàng thông itn đặt hàng ở bên dưới hãy copy nó và gửi qua Zalo nha"),
         "title_coffee": MessageLookupByLibrary.simpleMessage("Quán cà phê"),
         "total_pay": MessageLookupByLibrary.simpleMessage("Tổng tiền"),
         "total_product": MessageLookupByLibrary.simpleMessage("Tổng sản phẩm"),

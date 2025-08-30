@@ -9,6 +9,8 @@ class _HeaderWidget extends StatefulWidget {
 
 class _HeaderWidgetState extends State<_HeaderWidget>
     with TickerProviderStateMixin {
+
+  final GlobalKey<CartClickMenuWidgetState> cartMenuKey = GlobalKey();
   final List<Widget> cartItems = List.generate(10, (index) {
     return ListTile(
       title: Text("Sản phẩm ${index + 1}"),
@@ -73,7 +75,7 @@ class _HeaderWidgetState extends State<_HeaderWidget>
                         ),
                       ),
                       CartClickMenuWidget(
-
+                        key: cartMenuKey,
                         icon: Badge(
                           backgroundColor: Colors.red,
                           textColor: Colors.white,
@@ -95,6 +97,7 @@ class _HeaderWidgetState extends State<_HeaderWidget>
                         ),
 
                         items: [
+
                           ChangeNotifierProvider.value(
                             value:  vm,
                             child: Consumer<HomeMobileScreenVm>(
@@ -140,23 +143,32 @@ class _HeaderWidgetState extends State<_HeaderWidget>
                                                 "${S.current.total_pay}: ${vm.totalPrice.toCurrency()}",
                                                 style: KSTheme.of(context).style.ts14w500.copyWith(fontFamily: FontFamily.roboto, color: AppStyle.primaryGreen_0_81_49),
                                               ),
-                                              SizedBox(height: 8,),
+
                                               // Spacer(),
+                                              if(vm.cartShop.isNotEmpty)
+                                              Column(
+                                                children: [
+                                                  SizedBox(height: 8,),
+                                                  MessengerNotLinkButton(
 
-                                              MessengerButton(
-                                                username: "0903383236",
-                                                message: (){
-                                                  final productLines = vm.cartShop.map((p) =>
-                                                  "${p.name} - ${p.price}₫ x${p.amount}"
-                                                  ).join('\n');
+                                                    username: "0903383236",
+                                                    message: (){
+                                                      final productLines = vm.cartShop.map((p) =>
+                                                      "${p.name} - ${p.price}₫ x${p.amount}"
+                                                      ).join('\n');
 
-                                                  // Tính tổng tiền
-                                                  final total = vm.cartShop.fold<int>(0, (sum, p) => sum + p.price * p.amount);
-                                                  final message = "$productLines\nTổng tiền: $total₫";
-                                                  return (message);
+                                                      // Tính tổng tiền
+                                                      final total = vm.cartShop.fold<int>(0, (sum, p) => sum + p.price * p.amount);
+                                                      final message = "$productLines\nTổng tiền: $total₫";
+                                                      cartMenuKey.currentState?.closeMenu();
+                                                      return (message);
 
-                                                },
+                                                    },
+                                                  ),
+                                                ],
                                               ),
+
+
 
 
 

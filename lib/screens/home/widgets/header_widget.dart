@@ -9,6 +9,7 @@ class _HeaderWidget extends StatefulWidget {
 
 class _HeaderWidgetState extends State<_HeaderWidget>
     with TickerProviderStateMixin {
+  final GlobalKey<CartHoverMenuWidgetState> cartMenuKeyA = GlobalKey();
   final List<Widget> cartItems = List.generate(10, (index) {
     return ListTile(
       title: Text("Sản phẩm ${index + 1}"),
@@ -95,6 +96,7 @@ class _HeaderWidgetState extends State<_HeaderWidget>
                         ),
                       ),
                       CartHoverMenuWidget(
+                        key: cartMenuKeyA,
 
                         icon: Badge(
                           backgroundColor: Colors.red,
@@ -161,8 +163,10 @@ class _HeaderWidgetState extends State<_HeaderWidget>
                                             style: KSTheme.of(context).style.ts14w500.copyWith(fontFamily: FontFamily.roboto, color: AppStyle.primaryGreen_0_81_49),
                                           ),
                                           Spacer(),
+                                          if(vm.cartShop.isNotEmpty)
 
-                                          MessengerButton(
+                                          MessengerNotLinkButton(
+
                                             username: "0903383236",
                                             message: (){
                                               final productLines = vm.cartShop.map((p) =>
@@ -172,6 +176,7 @@ class _HeaderWidgetState extends State<_HeaderWidget>
                                               // Tính tổng tiền
                                               final total = vm.cartShop.fold<int>(0, (sum, p) => sum + p.price * p.amount);
                                               final message = "$productLines\nTổng tiền: $total₫";
+                                              cartMenuKeyA.currentState?.closeMenu();
                                               return (message);
 
                                             },

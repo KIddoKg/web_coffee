@@ -825,6 +825,7 @@ class HomeMobileScreenVm extends ChangeNotifier {
     }
   }
 
+
   int _currentIndex = 0;
 
   final List<FeedbackModel> _feedbacks = [

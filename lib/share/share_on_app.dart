@@ -1665,10 +1665,10 @@ class CartHoverMenuWidget extends StatefulWidget {
   });
 
   @override
-  State<CartHoverMenuWidget> createState() => _CartHoverMenuWidgetState();
+  State<CartHoverMenuWidget> createState() => CartHoverMenuWidgetState();
 }
 
-class _CartHoverMenuWidgetState extends State<CartHoverMenuWidget> {
+class CartHoverMenuWidgetState extends State<CartHoverMenuWidget> {
   OverlayEntry? _overlayEntry;
   bool _hovering = false;
 
@@ -1746,7 +1746,11 @@ class _CartHoverMenuWidgetState extends State<CartHoverMenuWidget> {
     }
     FocusScope.of(context).unfocus();
   }
-
+  void closeMenu() {
+    if (_hovering) {
+      _removeOverlay();
+    }
+  }
   void _removeOverlay() {
     _overlayEntry?.remove();
     _overlayEntry = null;
@@ -1786,10 +1790,11 @@ class CartClickMenuWidget extends StatefulWidget {
   });
 
   @override
-  State<CartClickMenuWidget> createState() => _CartClickMenuWidgetState();
+  State<CartClickMenuWidget> createState() => CartClickMenuWidgetState();
 }
 
-class _CartClickMenuWidgetState extends State<CartClickMenuWidget> {
+class CartClickMenuWidgetState extends State<CartClickMenuWidget> {
+
   OverlayEntry? _overlayEntry;
   bool _isOpen = false;
 
@@ -1799,6 +1804,12 @@ class _CartClickMenuWidgetState extends State<CartClickMenuWidget> {
       _removeOverlay();
     } else {
       _showOverlay(context);
+    }
+  }
+
+  void closeMenu() {
+    if (_isOpen) {
+      _removeOverlay();
     }
   }
 
@@ -1897,11 +1908,13 @@ class _TrianglePainter extends CustomPainter {
 
 class MessengerButton extends StatelessWidget {
   final String username; // Username hoặc ID Facebook
+  final BuildContext context; // Username hoặc ID Facebook
   final String Function() message;  // Nội dung sẵn
 
   const MessengerButton({
     super.key,
     required this.username,
+    required this.context,
     required this.message,
   });
 
@@ -1920,6 +1933,7 @@ class MessengerButton extends StatelessWidget {
     } else {
       debugPrint('Không thể mở link Zalo');
     }
+
   }
 
 
@@ -1941,5 +1955,61 @@ class MessengerButton extends StatelessWidget {
       ),
     );
 
+  }
+}
+class MessengerNotLinkButton extends StatefulWidget {
+  final String username;
+  final String Function() message;
+
+  const MessengerNotLinkButton({
+    super.key,
+    required this.username,
+    required this.message,
+  });
+
+  @override
+  State<MessengerNotLinkButton> createState() => _MessengerNotLinkButtonState();
+}
+
+class _MessengerNotLinkButtonState extends State<MessengerNotLinkButton> {
+  bool _isDialogOpen = false;
+
+  void _open() async {
+    if (_isDialogOpen) return; // guard: nếu đang mở dialog thì bỏ qua
+    _isDialogOpen = true;
+
+      showCustomDialog(
+      context: context,
+      info: widget.message(),
+      title: S.current.info,
+      detail: S.current.thanks,
+    );
+
+    _isDialogOpen = false; // reset khi dialog đóng
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: S.current.paste,
+      child: ElevatedButton(
+        onPressed: _open,
+        style: ElevatedButton.styleFrom(
+          side: BorderSide.none,
+          elevation: 0,
+          backgroundColor: AppStyle.primaryGreen_0_81_49,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
+        child: Text(
+          S.current.zalo,
+          style: KSTheme.of(context)
+              .style
+              .ts14w500
+              .copyWith(fontFamily: FontFamily.roboto, color: AppStyle.whiteBg),
+        ),
+      ),
+    );
   }
 }

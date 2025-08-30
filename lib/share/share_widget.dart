@@ -40,7 +40,8 @@ class KSLoadingIndicator extends StatelessWidget {
   const KSLoadingIndicator({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) =>
+      Container(
         width: double.infinity,
         height: double.infinity,
         color: Colors.black.withOpacity(0),
@@ -72,13 +73,12 @@ class KSWindowAreaFittedBox extends StatelessWidget {
   final bool fitRight;
   final Color? color;
 
-  const KSWindowAreaFittedBox(
-      {this.fitTop = false,
-      this.fitBottom = false,
-      this.fitLeft = false,
-      this.fitRight = false,
-      this.color = Colors.transparent,
-      Key? key})
+  const KSWindowAreaFittedBox({this.fitTop = false,
+    this.fitBottom = false,
+    this.fitLeft = false,
+    this.fitRight = false,
+    this.color = Colors.transparent,
+    Key? key})
       : super(key: key);
 
   @override
@@ -98,7 +98,8 @@ class KSWindowAreaFittedBox extends StatelessWidget {
     return Container();
   }
 
-  Widget _fitBox(double width, double? height) => Container(
+  Widget _fitBox(double width, double? height) =>
+      Container(
         width: width,
         height: height,
         color: color!,
@@ -125,30 +126,30 @@ class KSScaffold extends StatelessWidget {
   final bool isFitBottomNav;
   final Widget? floatingActionButton;
 
-  const KSScaffold(
-      {required this.child,
-      this.floatingActionButton,
-      this.backgroundColor,
-      this.onTap,
-      this.onBack,
-      this.bottomNavigationBar,
-      this.systemUiOverlayStyle = SystemUiOverlayStyle.light,
-      this.padding = EdgeInsets.zero,
-      this.statusBarBackgroundColor,
-      this.safeAreaTop = false,
-      this.safeAreaLeft = true,
-      this.safeAreaRight = true,
-      this.safeAreaBottom = false,
-      this.isDisableFitTop = false,
-      this.isDisableFitBottom = false,
-      this.isFitTopAppbar = false,
-      this.isFitBottomNav = false,
-      this.appbar,
-      Key? key})
+  const KSScaffold({required this.child,
+    this.floatingActionButton,
+    this.backgroundColor,
+    this.onTap,
+    this.onBack,
+    this.bottomNavigationBar,
+    this.systemUiOverlayStyle = SystemUiOverlayStyle.light,
+    this.padding = EdgeInsets.zero,
+    this.statusBarBackgroundColor,
+    this.safeAreaTop = false,
+    this.safeAreaLeft = true,
+    this.safeAreaRight = true,
+    this.safeAreaBottom = false,
+    this.isDisableFitTop = false,
+    this.isDisableFitBottom = false,
+    this.isFitTopAppbar = false,
+    this.isFitBottomNav = false,
+    this.appbar,
+    Key? key})
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) => AnnotatedRegion(
+  Widget build(BuildContext context) =>
+      AnnotatedRegion(
         value: systemUiOverlayStyle,
         child: WillPopScope(
           onWillPop: () async {
@@ -166,8 +167,8 @@ class KSScaffold extends StatelessWidget {
                   top: !isFitTopAppbar
                       ? 0.0
                       : AppSetting.instance.ios
-                          ? 50
-                          : 40),
+                      ? 50
+                      : 40),
               child: Column(
                 children: [
                   if (!isDisableFitTop) ...[
@@ -215,8 +216,7 @@ class KSButton extends StatelessWidget {
   final String? icon;
   final void Function()? onTap;
 
-  KSButton(
-    this.title, {
+  KSButton(this.title, {
     super.key,
     this.onTap,
     this.isSelected = false,
@@ -239,8 +239,8 @@ class KSButton extends StatelessWidget {
         color: lock
             ? AppStyle.whiteBg
             : (backgroundColor == Colors.transparent
-                ? backgroundColor
-                : backgroundColor),
+            ? backgroundColor
+            : backgroundColor),
         borderRadius: BorderRadius.circular(radius),
         border: Border.all(
           color: lock ? AppStyle.primaryGray : border,
@@ -252,16 +252,16 @@ class KSButton extends StatelessWidget {
         onTap: lock
             ? null // Nếu lock = true, vô hiệu hóa onTap
             : () async {
-                FocusScope.of(context).unfocus();
-                // loadDataWithLoading();
-                // await loadDataWithLoading(
-                //   action: () async {
-                //     onTap
-                //         ?.call(); // ✅ Hàm TestBug được chạy sau khi loading hiển thị xong
-                //   },
-                // );
-                onTap
-                    ?.call();
+          FocusScope.of(context).unfocus();
+          // loadDataWithLoading();
+          // await loadDataWithLoading(
+          //   action: () async {
+          //     onTap
+          //         ?.call(); // ✅ Hàm TestBug được chạy sau khi loading hiển thị xong
+          //   },
+          // );
+          onTap
+              ?.call();
         },
         child: Padding(
           padding: const EdgeInsets.all(0.0).copyWith(left: 8, right: 8),
@@ -280,10 +280,14 @@ class KSButton extends StatelessWidget {
                 // const SizedBox(width: 8),
                 Text(title,
                     textAlign: TextAlign.center,
-                    style: KSTheme.of(context).style.ts15w500.copyWith(
+                    style: KSTheme
+                        .of(context)
+                        .style
+                        .ts15w500
+                        .copyWith(
                       fontFamily: FontFamily.roboto,
-                          color: lock ? AppStyle.primaryGrayWord : fontColor,
-                        )),
+                      color: lock ? AppStyle.primaryGrayWord : fontColor,
+                    )),
               ],
             ),
           ),
@@ -301,13 +305,12 @@ class KSShadow extends StatelessWidget {
   double line;
   Color lineColor;
 
-  KSShadow(
-      {required this.child,
-      this.direction = Offset.zero,
-      this.radius = 0,
-      this.color = Colors.white,
-      this.line = 0,
-      this.lineColor = Colors.white});
+  KSShadow({required this.child,
+    this.direction = Offset.zero,
+    this.radius = 0,
+    this.color = Colors.white,
+    this.line = 0,
+    this.lineColor = Colors.white});
 
   @override
   Widget build(BuildContext context) {
@@ -335,11 +338,10 @@ class KSShadowCircleLeft extends StatelessWidget {
   double radius;
   Color color;
 
-  KSShadowCircleLeft(
-      {required this.child,
-      this.direction = Offset.zero,
-      this.radius = 0,
-      this.color = Colors.white});
+  KSShadowCircleLeft({required this.child,
+    this.direction = Offset.zero,
+    this.radius = 0,
+    this.color = Colors.white});
 
   @override
   Widget build(BuildContext context) {
@@ -438,14 +440,15 @@ class KSNotificationAlert extends StatelessWidget {
   }) {
     showDialog(
       context: context,
-      builder: (context) => KSNotificationAlert(
-        title: title,
-        imageUrl: imageUrl,
-        button1Text: button1Text,
-        button2Text: button2Text,
-        onButton1Pressed: onButton1Pressed,
-        onButton2Pressed: onButton2Pressed,
-      ),
+      builder: (context) =>
+          KSNotificationAlert(
+            title: title,
+            imageUrl: imageUrl,
+            button1Text: button1Text,
+            button2Text: button2Text,
+            onButton1Pressed: onButton1Pressed,
+            onButton2Pressed: onButton2Pressed,
+          ),
     );
   }
 }
@@ -492,14 +495,18 @@ void KSshowCustomDialog({
                     Text(
                       title,
                       textAlign: TextAlign.center,
-                      style: KSTheme.of(context).style.ts20w700,
+                      style: KSTheme
+                          .of(context)
+                          .style
+                          .ts20w700,
                     ),
                     const SizedBox(height: 8),
                     if (successMessage != null)
                       Text(
                         successMessage.toUpperCase(),
                         textAlign: TextAlign.center,
-                        style: KSTheme.of(context)
+                        style: KSTheme
+                            .of(context)
                             .style
                             .ts20w700
                             .copyWith(color: AppStyle.primaryColor),
@@ -508,7 +515,8 @@ void KSshowCustomDialog({
                       Text(
                         errorsMessage.toUpperCase(),
                         textAlign: TextAlign.center,
-                        style: KSTheme.of(context)
+                        style: KSTheme
+                            .of(context)
                             .style
                             .ts20w700
                             .copyWith(color: AppStyle.primaryRedOr),
@@ -517,7 +525,8 @@ void KSshowCustomDialog({
                       Text(
                         dangerMessage.toUpperCase(),
                         textAlign: TextAlign.center,
-                        style: KSTheme.of(context)
+                        style: KSTheme
+                            .of(context)
                             .style
                             .ts20w700
                             .copyWith(color: AppStyle.primaryYellowFAAD14),
@@ -526,7 +535,8 @@ void KSshowCustomDialog({
                       Text(
                         detail,
                         textAlign: TextAlign.center,
-                        style: KSTheme.of(context)
+                        style: KSTheme
+                            .of(context)
                             .style
                             .ts16w400
                             .copyWith(color: AppStyle.primaryColorBlack),
@@ -579,7 +589,7 @@ void KSshowCustomDialog({
                       onHome != null
                           ? onHome()
                           : navigatorKey.currentState
-                              ?.popUntil((route) => route.isFirst);
+                          ?.popUntil((route) => route.isFirst);
                       ;
                     },
                   ),
@@ -831,20 +841,19 @@ class KSSearchBox extends StatefulWidget {
   void Function(String)? onSubmit;
   void Function(String)? onChange;
 
-  KSSearchBox(
-      {super.key,
-      this.hint = 'Tìm kiếm ngay....',
-      this.onChange,
-      this.onSubmit,
-      this.isAutocomplete = true,
-      this.minKeywordSearch = 4,
-      this.delayTypingSubmit = 1200,
-      this.controller,
-      this.backgroundColor,
-      this.border = false,
-      this.enableClearButton = false,
-      this.filter = false,
-      this.enableAnimationSubmit = false});
+  KSSearchBox({super.key,
+    this.hint = 'Tìm kiếm ngay....',
+    this.onChange,
+    this.onSubmit,
+    this.isAutocomplete = true,
+    this.minKeywordSearch = 4,
+    this.delayTypingSubmit = 1200,
+    this.controller,
+    this.backgroundColor,
+    this.border = false,
+    this.enableClearButton = false,
+    this.filter = false,
+    this.enableAnimationSubmit = false});
 
   @override
   State<KSSearchBox> createState() => _KSSearchBoxState();
@@ -885,7 +894,7 @@ class _KSSearchBoxState extends State<KSSearchBox> {
             controller: widget.controller,
             decoration: InputDecoration(
               contentPadding:
-                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+              const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
               prefixIcon: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Icon(Icons.search),
@@ -933,7 +942,10 @@ class _KSSearchBoxState extends State<KSSearchBox> {
                 ),
               ),
               hintText: widget.hint,
-              hintStyle: KSTheme.of(context).style.ts14w400,
+              hintStyle: KSTheme
+                  .of(context)
+                  .style
+                  .ts14w400,
             ),
           )
         ],
@@ -959,7 +971,9 @@ class _KSSearchBoxState extends State<KSSearchBox> {
         value.isNotEmpty && !isDisplayButtonClear)) {
       isDisplayButtonClear = !isDisplayButtonClear;
       setState(() {});
-      log('autoComple.display button clear ${isDisplayButtonClear ? 'hiển thị' : 'ẩn'}');
+      log('autoComple.display button clear ${isDisplayButtonClear
+          ? 'hiển thị'
+          : 'ẩn'}');
     }
 
     if (value.length < widget.minKeywordSearch) {
@@ -984,7 +998,10 @@ class _KSSearchBoxState extends State<KSSearchBox> {
 
   void needRunAnimation() async {
     if (widget.enableAnimationSubmit) {
-      animationWithValue = MediaQuery.of(context).size.width;
+      animationWithValue = MediaQuery
+          .of(context)
+          .size
+          .width;
       isAnimated = !isAnimated;
       setState(() {});
 
@@ -1050,7 +1067,8 @@ Future<void> KSshowAlertIOS(BuildContext _context, String title, String message,
 
   await showCupertinoDialog(
       context: _context!,
-      builder: (context) => CupertinoAlertDialog(
+      builder: (context) =>
+          CupertinoAlertDialog(
             title: Text(title),
             content: Text(message),
             actions: [
@@ -1085,7 +1103,8 @@ Future<void> KSshowAlertIOSNotContext(String title, String message,
 
   await showCupertinoDialog(
       context: _context!,
-      builder: (context) => CupertinoAlertDialog(
+      builder: (context) =>
+          CupertinoAlertDialog(
             title: Text(title),
             content: Text(message),
             actions: [
@@ -1126,35 +1145,36 @@ class KSLoadingDot extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if (linkLogo != null)
-          Transform.scale(
-              scale: 2,
-              child: Image.network(
-                linkLogo!,
-                width: 150,
-                height: 150,
-              )),
-        ColorLoader3(
-          radius: 10,
-          dotRadius: 6.0,
-          centerDot: false,
-          dotColor2: AppStyle.primaryColor,
-          dotColor: AppStyle.primaryColor,
-          dotQuality: 8,
-        ),
-        KSText(
-          text!,
-          style: style ??
-              KSTheme.of(context)
-                  .style
-                  .ts12w700
-                  .copyWith(color: AppStyle.primaryColor),
-        )
-      ],
-    ));
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (linkLogo != null)
+              Transform.scale(
+                  scale: 2,
+                  child: Image.network(
+                    linkLogo!,
+                    width: 150,
+                    height: 150,
+                  )),
+            ColorLoader3(
+              radius: 10,
+              dotRadius: 6.0,
+              centerDot: false,
+              dotColor2: AppStyle.primaryColor,
+              dotColor: AppStyle.primaryColor,
+              dotQuality: 8,
+            ),
+            KSText(
+              text!,
+              style: style ??
+                  KSTheme
+                      .of(context)
+                      .style
+                      .ts12w700
+                      .copyWith(color: AppStyle.primaryColor),
+            )
+          ],
+        ));
   }
 }
 
@@ -1163,11 +1183,10 @@ class ColorLoader2 extends StatefulWidget {
   final Color color2;
   final Color color3;
 
-  const ColorLoader2(
-      {super.key,
-      this.color1 = Colors.deepOrangeAccent,
-      this.color2 = Colors.yellow,
-      this.color3 = Colors.lightGreen});
+  const ColorLoader2({super.key,
+    this.color1 = Colors.deepOrangeAccent,
+    this.color2 = Colors.yellow,
+    this.color3 = Colors.lightGreen});
 
   @override
   _ColorLoader2State createState() => _ColorLoader2State();
@@ -1356,14 +1375,13 @@ class ColorLoader3 extends StatefulWidget {
   final bool centerDot;
   final int dotQuality;
 
-  const ColorLoader3(
-      {super.key,
-      this.radius = 30.0,
-      this.dotRadius = 3.0,
-      this.centerDot = true,
-      this.dotColor = Colors.white,
-      this.dotColor2 = Colors.yellow,
-      this.dotQuality = 0});
+  const ColorLoader3({super.key,
+    this.radius = 30.0,
+    this.dotRadius = 3.0,
+    this.centerDot = true,
+    this.dotColor = Colors.white,
+    this.dotColor2 = Colors.yellow,
+    this.dotQuality = 0});
 
   @override
   _ColorLoader3State createState() => _ColorLoader3State();
@@ -1529,7 +1547,8 @@ class KSRow extends StatelessWidget {
                     width: 48,
                   ),
                   KSText(topping!,
-                      style: KSTheme.of(context)
+                      style: KSTheme
+                          .of(context)
                           .style
                           .ts12w400
                           .copyWith(color: AppStyle.primaryGrayWord)),
@@ -1550,7 +1569,8 @@ class KSRow extends StatelessWidget {
                   ),
                   KSText(
                     note!,
-                    style: KSTheme.of(context)
+                    style: KSTheme
+                        .of(context)
                         .style
                         .ts12w400
                         .copyWith(color: AppStyle.primaryGrayWord),
@@ -1565,16 +1585,15 @@ class KSRow extends StatelessWidget {
 }
 
 class KSRowText extends StatelessWidget {
-  KSRowText(
-    this.amount,
-    this.title,
-    this.value, {
-    this.note,
-    this.topping,
-    this.styleTitle,
-    this.styleValue,
-    this.padding = null,
-  });
+  KSRowText(this.amount,
+      this.title,
+      this.value, {
+        this.note,
+        this.topping,
+        this.styleTitle,
+        this.styleValue,
+        this.padding = null,
+      });
 
   String title, value;
 
@@ -1590,7 +1609,10 @@ class KSRowText extends StatelessWidget {
         "$amount x",
         textAlign: TextAlign.end,
         style: styleTitle == null
-            ? KSTheme.of(context).style.ts14w500
+            ? KSTheme
+            .of(context)
+            .style
+            .ts14w500
             : styleTitle,
       ),
       title: Column(
@@ -1598,7 +1620,10 @@ class KSRowText extends StatelessWidget {
           KSText(
             title,
             style: styleTitle == null
-                ? KSTheme.of(context).style.ts14w500
+                ? KSTheme
+                .of(context)
+                .style
+                .ts14w500
                 : styleTitle,
           ),
         ],
@@ -1606,10 +1631,11 @@ class KSRowText extends StatelessWidget {
       child: KSText(
         double.parse(value).toCurrency(),
         style: styleValue == null
-            ? KSTheme.of(context)
-                .style
-                .ts14w500
-                .copyWith(fontWeight: FontWeight.w600)
+            ? KSTheme
+            .of(context)
+            .style
+            .ts14w500
+            .copyWith(fontWeight: FontWeight.w600)
             : styleValue,
       ),
       topping: topping,
@@ -1664,7 +1690,11 @@ class DMCLRowTextCus extends StatelessWidget {
           child: KSText(
             title,
             style: styleTitle == null
-                ? KSTheme.of(context).style.ts16w500.copyWith(color: color)
+                ? KSTheme
+                .of(context)
+                .style
+                .ts16w500
+                .copyWith(color: color)
                 : styleTitle,
           ),
         ),
@@ -1681,7 +1711,10 @@ class DMCLRowTextCus extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: styleValue == null
-                ? KSTheme.of(context).style.ts16w500
+                ? KSTheme
+                .of(context)
+                .style
+                .ts16w500
                 : styleValue,
             // minFontSize: 18,
           ),
@@ -1707,7 +1740,11 @@ class DMCLRowTexExpand extends StatelessWidget {
           child: KSText(
             title,
             style: styleTitle == null
-                ? KSTheme.of(context).style.ts16w500.copyWith(color: color)
+                ? KSTheme
+                .of(context)
+                .style
+                .ts16w500
+                .copyWith(color: color)
                 : styleTitle,
           ),
         ),
@@ -1718,7 +1755,10 @@ class DMCLRowTexExpand extends StatelessWidget {
             textAlign: TextAlign.end,
             value,
             style: styleValue == null
-                ? KSTheme.of(context).style.ts16w500
+                ? KSTheme
+                .of(context)
+                .style
+                .ts16w500
                 : styleValue,
           ),
           // child: AutoSizeText(
@@ -1739,11 +1779,10 @@ class KSShadowBox extends StatelessWidget {
   Offset direction;
   double radius;
 
-  KSShadowBox(
-      {super.key,
-      required this.child,
-      this.direction = Offset.zero,
-      this.radius = 0});
+  KSShadowBox({super.key,
+    required this.child,
+    this.direction = Offset.zero,
+    this.radius = 0});
 
   @override
   Widget build(BuildContext context) {
@@ -1770,12 +1809,11 @@ class KSInkWellUnFocus extends StatelessWidget {
   double radius;
   bool sameColor;
 
-  KSInkWellUnFocus(
-      {super.key,
-      required this.child,
-      this.radius = 0,
-      this.onTap,
-      this.sameColor = false});
+  KSInkWellUnFocus({super.key,
+    required this.child,
+    this.radius = 0,
+    this.onTap,
+    this.sameColor = false});
 
   @override
   Widget build(BuildContext context) {
@@ -1784,9 +1822,9 @@ class KSInkWellUnFocus extends StatelessWidget {
       child: InkWell(
           borderRadius: BorderRadius.circular(radius),
           splashColor:
-              !sameColor ? AppStyle.primaryColor.withOpacity(0.2) : null,
+          !sameColor ? AppStyle.primaryColor.withOpacity(0.2) : null,
           highlightColor:
-              !sameColor ? AppStyle.primaryColor.withOpacity(0.2) : null,
+          !sameColor ? AppStyle.primaryColor.withOpacity(0.2) : null,
           onTap: () {
             FocusScope.of(context).unfocus();
             onTap?.call();
@@ -1899,7 +1937,7 @@ class KSBaseWidget extends StatelessWidget {
                 if (snapshot.data ?? false)
                   Container(
                     decoration:
-                        BoxDecoration(color: Colors.grey.withOpacity(0.1)),
+                    BoxDecoration(color: Colors.grey.withOpacity(0.1)),
                     child: const Center(
                       child: CupertinoActivityIndicator(),
                     ),
@@ -1938,7 +1976,8 @@ class CustomTag extends StatelessWidget {
         ),
       ),
       child: KSText(text,
-          style: KSTheme.of(context)
+          style: KSTheme
+              .of(context)
               .style
               .ts12w700
               .copyWith(color: AppStyle.whiteBg)),
@@ -1972,7 +2011,8 @@ class CustomTag2 extends StatelessWidget {
       ),
       child: KSText(
         text,
-        style: KSTheme.of(context)
+        style: KSTheme
+            .of(context)
             .style
             .ts12w700
             .copyWith(color: AppStyle.whiteBg),
@@ -1983,37 +2023,39 @@ class CustomTag2 extends StatelessWidget {
 
 Future<dynamic> showAlert(BuildContext context, String title, String message,
     {List<CupertinoButton>? actions,
-    List<ElevatedButton>? actionAndroids}) async {
+      List<ElevatedButton>? actionAndroids}) async {
   return showDialog(
     context: context,
-    builder: (context) => AlertDialog(
-      title: KSText(title),
-      content: KSText(message),
-      actions: [
-        if (actionAndroids != null)
-          ...actionAndroids
-        else
-          ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const KSText('Đồng ý'))
-      ],
-    ),
+    builder: (context) =>
+        AlertDialog(
+          title: KSText(title),
+          content: KSText(message),
+          actions: [
+            if (actionAndroids != null)
+              ...actionAndroids
+            else
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const KSText('Đồng ý'))
+          ],
+        ),
   );
 }
 
 Future<void> showAlertIOS(BuildContext _context, String title, String message,
     {bool? autoPop,
-    bool? autoBackPop,
-    void Function()? onTap,
-    bool? oneButton}) async {
+      bool? autoBackPop,
+      void Function()? onTap,
+      bool? oneButton}) async {
   final _context = navigatorKey.currentContext;
   if (_context == null) return;
 
   await showCupertinoDialog(
       context: _context!,
-      builder: (context) => CupertinoAlertDialog(
+      builder: (context) =>
+          CupertinoAlertDialog(
             title: Text(title),
             content: Text(message),
             actions: [
@@ -2168,11 +2210,12 @@ class TopBorderContainer extends StatelessWidget {
 
 void showCustomLoading({bool moveRoute = false}) {
   BotToast.showCustomLoading(
-    toastBuilder: (_) => Container(
-        width: 100.w,
-        height: 100.h,
-        color: AppStyle.whiteBg.withOpacity(moveRoute ? 1 : 0.2),
-        child: LoadingLottie()),
+    toastBuilder: (_) =>
+        Container(
+            width: 100.w,
+            height: 100.h,
+            color: AppStyle.whiteBg.withOpacity(moveRoute ? 1 : 0.2),
+            child: LoadingLottie()),
   );
 }
 
@@ -2191,10 +2234,9 @@ Future<void> navigateWithLoading(
       moveRoute: true);
 }
 
-Future<void> loadDataWithLoading(
-    {Future<void> Function()? action,
-    int milliseconds = 1000,
-    bool moveRoute = false}) async {
+Future<void> loadDataWithLoading({Future<void> Function()? action,
+  int milliseconds = 1000,
+  bool moveRoute = false}) async {
   showCustomLoading(moveRoute: moveRoute);
 
   await Future.delayed(Duration(milliseconds: milliseconds));
@@ -2242,8 +2284,7 @@ class KSText extends StatelessWidget {
   final TextHeightBehavior? textHeightBehavior;
   final Color? selectionColor;
 
-  const KSText(
-    this.title, {
+  const KSText(this.title, {
     super.key,
     this.style,
     this.strutStyle,
@@ -2311,8 +2352,8 @@ class _AttachmentGalleryState extends State<AttachmentGallery> {
       itemCount: isExpanded
           ? widget.imagePaths.length + 1
           : (widget.imagePaths.length > maxVisibleImages
-              ? maxVisibleImages + 1
-              : widget.imagePaths.length),
+          ? maxVisibleImages + 1
+          : widget.imagePaths.length),
       itemBuilder: (context, index) {
         if (!isExpanded &&
             index == maxVisibleImages &&
@@ -2396,7 +2437,7 @@ class _AttachmentGalleryState extends State<AttachmentGallery> {
                     child: CircularProgressIndicator(
                       value: loadingProgress.expectedTotalBytes != null
                           ? loadingProgress.cumulativeBytesLoaded /
-                              (loadingProgress.expectedTotalBytes ?? 1)
+                          (loadingProgress.expectedTotalBytes ?? 1)
                           : null,
                     ),
                   );
@@ -2406,7 +2447,7 @@ class _AttachmentGalleryState extends State<AttachmentGallery> {
                     color: Colors.grey[200],
                     alignment: Alignment.center,
                     child:
-                        Icon(Icons.broken_image, color: Colors.red, size: 40),
+                    Icon(Icons.broken_image, color: Colors.red, size: 40),
                   );
                 },
               ),
@@ -2428,16 +2469,15 @@ class KSProgressbar extends StatelessWidget {
   Color foregroundColor;
   Color fontColor;
 
-  KSProgressbar(
-      {super.key,
-      // required this.width,
-      this.height = 10,
-      this.duration = const Duration(milliseconds: 275),
-      this.backgroundColor = const Color.fromARGB(255, 205, 205, 205),
-      this.foregroundColor = Colors.amberAccent,
-      this.fontColor = Colors.black,
-      this.borderRadius,
-      required this.progress});
+  KSProgressbar({super.key,
+    // required this.width,
+    this.height = 10,
+    this.duration = const Duration(milliseconds: 275),
+    this.backgroundColor = const Color.fromARGB(255, 205, 205, 205),
+    this.foregroundColor = Colors.amberAccent,
+    this.fontColor = Colors.black,
+    this.borderRadius,
+    required this.progress});
 
   @override
   Widget build(BuildContext context) {
@@ -2447,7 +2487,10 @@ class KSProgressbar extends StatelessWidget {
         decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: borderRadius ?? BorderRadius.circular(16)),
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         height: height,
       ),
       TweenAnimationBuilder(
@@ -2460,7 +2503,10 @@ class KSProgressbar extends StatelessWidget {
               decoration: BoxDecoration(
                   color: foregroundColor,
                   borderRadius: borderRadius ?? BorderRadius.circular(16)),
-              width: MediaQuery.of(context).size.width * (value / 100),
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * (value / 100),
               height: height,
             ),
           );
@@ -2500,7 +2546,7 @@ void showImagePopupAll(BuildContext context, String url) {
                       child: CircularProgressIndicator(
                         value: loadingProgress.expectedTotalBytes != null
                             ? loadingProgress.cumulativeBytesLoaded /
-                                (loadingProgress.expectedTotalBytes ?? 1)
+                            (loadingProgress.expectedTotalBytes ?? 1)
                             : null,
                       ),
                     );
@@ -2542,7 +2588,7 @@ void showImagePopupAll(BuildContext context, String url) {
 
 void showCustomDialog({
   required BuildContext context,
-  required String imageAsset,
+  required String info,
   required String title,
   String? successMessage,
   String? detail,
@@ -2584,7 +2630,10 @@ void showCustomDialog({
                         title,
                         maxLines: 2,
                         textAlign: TextAlign.center,
-                        style: KSTheme.of(context).style.ts42w500,
+                        style: KSTheme
+                            .of(context)
+                            .style
+                            .ts35w500,
                       ),
                       if (detail != null)
                         Text(
@@ -2593,15 +2642,53 @@ void showCustomDialog({
                           textAlign: TextAlign.center,
                           style: KSTextStyle()
                               .style(
-                                15,
-                                FontWeight.w400,
-                                fontBuilder: GoogleFonts.cormorantInfant,
-                              )
+                            15,
+                            FontWeight.w400,
+                            fontBuilder: GoogleFonts.cormorantInfant,
+                          )
                               .copyWith(color: AppStyle.primaryGreen647B58),
                         ),
                       const SizedBox(height: 20),
-                      Image.asset(imageAsset, height: 200, width: 200),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],   // màu nền khung
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Icon copy
+
+
+                            // Text nội dung
+                            Expanded(
+                              child: Text(
+                                info,
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.copy, size: 20),
+                              onPressed: () {
+                                Clipboard.setData(ClipboardData(text: info));
+                                // Optional: show toast/snackbar
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Copy')),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+
                       const SizedBox(height: 16),
+                      MessengerButton(
+                          context: context,
+                          username: "0903383236",
+                          message: () {
+                            return info;
+                          }),
                       if (successMessage != null)
                         Text(
                           successMessage.toUpperCase(),
@@ -2620,7 +2707,7 @@ void showCustomDialog({
                           textAlign: TextAlign.center,
                           maxLines: 1,
                         ),
-                      const SizedBox(height: 16),
+
                     ],
                   ),
                 ),
@@ -2699,12 +2786,12 @@ class _KSHoverContainerState extends State<KSHoverContainer> {
           borderRadius: widget.borderRadius ?? BorderRadius.circular(16),
           boxShadow: _isHovered
               ? [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 12,
-                    offset: const Offset(0, 6),
-                  )
-                ]
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 12,
+              offset: const Offset(0, 6),
+            )
+          ]
               : [],
         ),
         child: widget.child,

@@ -79,5 +79,7 @@
   "delete": "Delete",
   "paste": "Paste to order in Zalo",
   "total_pay": "Total pay",
-  "zalo": "Order in Zalo"
+  "zalo": "Order in Zalo",
+  "thanks": "Thank you for your order! Please copy it below and send via Zalo.",
+  "info": "Information"
 }

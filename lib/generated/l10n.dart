@@ -859,6 +859,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Thank you for your order! Please copy it below and send via Zalo.`
+  String get thanks {
+    return Intl.message(
+      'Thank you for your order! Please copy it below and send via Zalo.',
+      name: 'thanks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Information`
+  String get info {
+    return Intl.message(
+      'Information',
+      name: 'info',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
