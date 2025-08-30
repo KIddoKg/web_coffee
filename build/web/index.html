@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <!--    <meta name="description" content="Thiệp cưới online của Gia Thịnh & Bảo Hân, cùng đếm ngược đến ngày trọng đại!">-->
+
+    <meta name="description"
+          content="">
+
+
+    <base href="/">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- App Info -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="xanh_coffee">
+    <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+    <title>Xanh Coffee</title>
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
+    <!-- Meta thumbnail preview for Messenger, Facebook, Zalo, etc. -->
+    <!-- 👇 THÊM vào trong <head> -->
+    <meta property="og:title" content="Xanh Coffee"/>
+
+    <meta property="og:image" content="https://a.com/assets/png_thumnail.png"/>
+    <meta name="og:description" content="Thưởng thức ngay những món nước thơm ngọt hòa quyện cùng đá mát lạnh, uống một lần là mê ngay!">
+    <meta property="og:url" content="https://a.com"/>
+    <meta property="og:type" content="website"/>
+
+    <!-- Cho Twitter preview nếu muốn -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="Xanh Coffee"/>
+    <meta name="twitter:description" content="Thưởng thức ngay những món nước thơm ngọt hòa quyện cùng đá mát lạnh, uống một lần là mê ngay!">
+    <meta name="twitter:image" content="https://a.com/assets/ppng_thumnail.png"/>
+
+
+    <!-- Splash Styles -->
+    <style>
+        html, body {
+            height: 100%;
+            scroll-behavior: smooth;
+            margin: 0;
+            padding: 0;
+            overscroll-behavior-y: contain; /* Chặn overscroll trên Y */
+            overscroll-behavior: contain; /* CHẶN hiệu ứng bounce cả hai chiều */
+            background-color: black; /* hoặc màu nền Flutter Web app bạn dùng */
+            touch-action: none;
+        }
+
+        #flutter-view {
+            height: 100%;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+            display: block;
+        }
+
+        #scroll-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            touch-action: pan-y;
+        }
+
+
+        #loading-splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+            /* Dành cho mobile GPU rendering */
+            transform: none;
+            animation: none;
+            will-change: opacity;
+            backface-visibility: hidden;
+            -webkit-transform: translateZ(0); /* Tối ưu cho Safari mobile */
+        }
+
+        #loading-splash img,
+        #loading-text,
+        #loading-animation,
+        #loading-date {
+            transform: none;
+            animation: none;
+            backface-visibility: hidden;
+            -webkit-transform: translateZ(0); /* Tắt phóng to tự động Safari */
+        }
+
+        /* Đảm bảo loading content được căn giữa */
+        #loading-splash > * {
+            flex-shrink: 0;
+        }
+
+        #loading-splash img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 16px;
+        }
+
+        #loading-text {
+      font-family: "Playfair Display", serif;
+            font-size: 40px;
+            color: #005131;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #loading-date {
+            font-family: "Playfair Display", serif;
+            font-size: 25px;
+            color: #005131;
+        }
+
+        #loading-animation {
+            width: 120px;
+            height: 120px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Debug style - uncomment to see positioning */
+        /*
+        #loading-splash {
+            border: 3px solid red !important;
+        }
+        #loading-text {
+            border: 2px solid blue !important;
+        }
+        #loading-animation {
+            border: 2px solid green !important;
+        }
+        */
+
+        .loading-dots {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .loading-dots span {
+            width: 10px;
+            height: 10px;
+            background-color: #005131; /* màu xanh logo */
+            border-radius: 50%;
+            display: inline-block;
+            animation: bounce 1.2s infinite ease-in-out;
+        }
+
+        .loading-dots span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+#loading-logo {
+  width: 200px;   /* tăng size logo */
+  height: auto;   /* giữ tỉ lệ ảnh */
+  margin-bottom: 20px;
+}
+
+    </style>
+</head>
+
+<body>
+    <script>
+        document.addEventListener('touchmove', function (e) {
+            // chỉ cho scroll trong scroll-wrapper
+            if (!e.target.closest('#scroll-wrapper')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+
+    <script>
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing loading screen...');
+            
+            let startY = 0;
+            const wrapper = document.getElementById("scroll-wrapper");
+            const loadingSplash = document.getElementById('loading-splash');
+            
+            // Make sure loading screen is visible
+            if (loadingSplash) {
+                loadingSplash.style.display = 'flex';
+                loadingSplash.style.opacity = '1';
+                console.log('Loading splash shown');
+            }
+
+            if (wrapper) {
+                wrapper.addEventListener('touchstart', function (e) {
+                    startY = e.touches[0].clientY;
+                }, { passive: true });
+
+                wrapper.addEventListener('touchmove', function (e) {
+                    const currentY = e.touches[0].clientY;
+                    const deltaY = currentY - startY;
+
+                    // ✅ Chỉ chặn khi scroll-wrapper ở đầu và người dùng kéo mạnh xuống
+                    if (wrapper.scrollTop <= 0 && deltaY > 25) {
+                        e.preventDefault(); // Ngăn dismiss WebView
+                    }
+                }, { passive: false });
+            }
+        });
+
+        // Hide loading screen when Flutter is ready
+        window.addEventListener('flutter-first-frame', function() {
+            console.log('Flutter first frame event fired');
+            const loadingSplash = document.getElementById('loading-splash');
+            if (loadingSplash) {
+                loadingSplash.style.opacity = '0';
+                setTimeout(function() {
+                    loadingSplash.style.display = 'none';
+                    console.log('Loading splash hidden');
+                }, 500);
+            }
+        });
+
+        // Alternative event listener for Flutter ready
+        window.addEventListener('FlutterWebLoaded', function() {
+            console.log('FlutterWebLoaded event fired');
+            const loadingSplash = document.getElementById('loading-splash');
+            if (loadingSplash) {
+                loadingSplash.style.opacity = '0';
+                setTimeout(function() {
+                    loadingSplash.style.display = 'none';
+                    console.log('Loading splash hidden via FlutterWebLoaded');
+                }, 500);
+            }
+        });
+
+        // Fallback: Hide loading after 5 seconds if Flutter event doesn't fire
+        setTimeout(function() {
+            console.log('Fallback timer triggered');
+            const loadingSplash = document.getElementById('loading-splash');
+            if (loadingSplash && loadingSplash.style.display !== 'none') {
+                console.log('Hiding loading splash via fallback');
+                loadingSplash.style.opacity = '0';
+                setTimeout(function() {
+                    loadingSplash.style.display = 'none';
+                }, 500);
+            }
+        }, 5000);
+    </script>
+
+    <script src="flutter_bootstrap.js" async></script>
+
+    <div id="scroll-wrapper" style="height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch;">
+        <flutter-view id="flutter_view"></flutter-view>
+    </div>
+    
+    <!-- Splash screen -->
+    <div id="loading-splash">
+        <!-- Logo -->
+        <img src="assets/png/png_logo.png" alt="Logo" id="loading-logo">
+        <!-- Dots -->
+        <div class="loading-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+</body>
+</html>
