@@ -1808,38 +1808,51 @@ class _CartClickMenuWidgetState extends State<CartClickMenuWidget> {
     final renderBox = context.findRenderObject() as RenderBox;
     final offset = renderBox.localToGlobal(Offset.zero);
     final screenWidth = MediaQuery.of(context).size.width;
-     double menuWidth = 100.w < 400 ?  80.w:400;
-     print(menuWidth);
-    double left = offset.dx ;
+    double menuWidth = 100.w < 400 ? 80.w : 400;
 
+    double left = offset.dx;
     if (left + menuWidth > screenWidth - 10) left = screenWidth - menuWidth - 10;
     if (left < 10) left = 10;
 
     _overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        left: left,
-        top: offset.dy + renderBox.size.height + 5,
-        child: Material(
-          color: Colors.transparent,
-          child: Container(
-
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 6,
-                  offset: const Offset(0, 2),
-                )
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: widget.items,
+      builder: (context) => Stack(
+        children: [
+          /// Vùng phủ toàn màn hình để bắt sự kiện tap/scroll ngoài menu
+          Positioned.fill(
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: _removeOverlay,
+              onPanStart: (_) => _removeOverlay(), // khi scroll cũng đóng
+              child: const SizedBox.expand(),
             ),
           ),
-        ),
+
+          /// Menu
+          Positioned(
+            left: left,
+            top: offset.dy + renderBox.size.height + 5,
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    )
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: widget.items,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
 
