@@ -86,9 +86,9 @@ void main() async {
     // });
     // Lắng nghe khi resize
 
-   await Future.delayed(Duration(seconds: 5), () {
-      showSplashFor(Duration(seconds: 1)); // ẩn lần đầu
-    });
+   // await Future.delayed(Duration(seconds: 5), () {
+   //    showSplashFor(Duration(seconds: 1)); // ẩn lần đầu
+   //  });
     html.window.onResize.listen((event) {
       showSplashFor(Duration(seconds: 1)); // mỗi lần resize, hiển splash 1s
     });
