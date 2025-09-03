@@ -67,7 +67,7 @@ class _FooterWidgetState extends State<_FooterWidget> {
                         HoverText(
                           text:  S.current.address,
                           onTap: (){
-                           vm.openMap(0.7259948,106.6153045);
+                           vm.openMap(10.7259948,106.6153045);
                           },
                           style:  KSTheme.of(context).style.ts14w400.copyWith(
                               color: AppStyle.whiteBg,

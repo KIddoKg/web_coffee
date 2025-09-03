@@ -1017,7 +1017,7 @@ class HomeMobileScreenVm extends ChangeNotifier {
 
   Future<void> openMap(double latitude, double longitude) async {
     final Uri googleMapUrl = Uri.parse(
-        'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude');
+        'https://www.google.com/maps/place/Xanh+coffee/@10.7261546,106.6128085,17z/data=!3m1!4b1!4m6!3m5!1s0x31752d003025a9cb:0xd6a68050f611e50d!8m2!3d10.7261493!4d106.6153834!16s%2Fg%2F11xtmnrkyt?entry=ttu&g_ep=EgoyMDI1MDgyNS4wIKXMDSoASAFQAw%3D%3D');
 
     if (await canLaunchUrl(googleMapUrl)) {
       await launchUrl(googleMapUrl);

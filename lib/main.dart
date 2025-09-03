@@ -4,11 +4,10 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
-import 'package:xanh_coffee/services/notification_services.dart';
-
 import 'app.dart';
 import 'config/env.dart';
 import 'config/flavor.dart';
+import 'generated/l10n.dart';
 import 'helper/di/di.dart';
 //
 // @pragma('vm:entry-point')
@@ -21,83 +20,49 @@ import 'dart:html' as html;
 void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
-    // SystemChrome.setEnabledSystemUIMode (SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
-    // await Firebase.initializeApp(
-    //   options: DefaultFirebaseOptions.currentPlatform,
-    // );
-    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
     await initDI(ENVType.prod);
-    // if (Platform.isIOS) {
-    //   Firebase.initializeApp(); // Avoid iOS release build hang
-    // } else {
-    //   await Firebase.initializeApp();
-    // }
-
-    // await di<NotificationUtil>().init();
-
-    // final FCMUtil fcmUtil = di();
-    // fcmUtil.getToken().then((fcmToken) => AppLog.info('FCM TOKEN: $fcmToken'));
-
-    // final NotificationUtil notificationUtil = di();
-
-    // fcmUtil.onMessage().listen((RemoteMessage event) {
-    //   AppLog.info(
-    //       'FCM received data when app visible on the screen: ${event.data}');
-    //   final NotificationData notificationData =
-    //       NotificationData.fromJson(event.data);
-
-    //   notificationUtil.show(notificationData);
-    // });
-
-    // fcmUtil.onMessageOpenedApp().listen((RemoteMessage event) {
-    //   AppLog.info(
-    //       'FCM received data when open app via notification from background: ${event.data}');
-    //   // final NotificationData notificationData =
-    //   //     NotificationData.fromJson(event.data);
-    // });
-
-    // FirebaseMessaging.onBackgroundMessage(onBackgroundMessageHandler);
-
-    // NotificationManager.instance.init();
-    // NotificationManager.instance.main();
-
-    // runApp(
-    //   DevicePreview(
-    //     enabled: true,
-    //     builder: (context) => MyApp(shouldShowDebugButton: Flavor.flavorType.isProd), // Wrap your app
-    //   ),
-    // );
 
     runApp(
       MyApp(shouldShowDebugButton: Flavor.flavorType.isProd),
     );
-    // Future.delayed(Duration(seconds: 5), () {
-    //   final splash = html.document.getElementById('loading-splash');
-    //   if (splash != null) {
-    //     // Fade-out trước khi xoá
-    //     splash.style.transition = 'opacity 0.8s ease-out';
-    //     splash.style.opacity = '0';
-    //
-    //     // Xoá hoàn toàn sau khi fade-out xong
-    //     Future.delayed(Duration(milliseconds: 800), () {
-    //       splash.remove();
-    //     });
-    //   }
-    // });
     // Lắng nghe khi resize
-
-   // await Future.delayed(Duration(seconds: 5), () {
-   //    showSplashFor(Duration(seconds: 1)); // ẩn lần đầu
-   //  });
-    html.window.onResize.listen((event) {
-      showSplashFor(Duration(seconds: 1)); // mỗi lần resize, hiển splash 1s
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      html.document.title = "Xanh Coffee";
     });
+    await Future.delayed(Duration(seconds: 2), () {
+      showSplashFor(Duration(seconds: 0));
+    });
+
+    // html.window.onResize.listen((event) {
+    //   EmojiPopupController().hide();
+    //
+    //   showSplashFor(Duration(seconds: 1));
+    // });
+
+    forceSetTitle();
+    startTitleKeeper()
+    ;
   }, (error, trace) {
     log('[DEV] Error while running app', time: DateTime.now(), error: error, stackTrace: trace);
   });
 }
+void startTitleKeeper() {
+  Timer.periodic(const Duration(seconds: 2), (timer) {
+    if (html.document.title != S.current.name_coffee) {
+      html.document.title = S.current.name_coffee;
+    }
+  });
+}
+
+
+void forceSetTitle() {
+  html.document.title = S.current.name_coffee;
+}
+
 void showSplashFor(Duration duration) {
   final splash = html.document.getElementById('loading-splash');
+
 
   if (splash != null) {
     // Reset style trước khi hiển
