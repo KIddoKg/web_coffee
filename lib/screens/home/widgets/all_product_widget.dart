@@ -119,21 +119,21 @@ class _AllProductWidget extends StatelessWidget {
                       ),
 
                       // Loading overlay
-                      if (vm.isLoading)
-                        AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 300),
-                          child: Container(height: 714,
-                            child: IgnorePointer(
-                              ignoring: !vm.isLoading, // không chặn tương tác khi không loading
-                              child: ColoredBox(
-                                color: AppStyle.whiteYellow,
-                                child: Center(
-                                  child: LoadingLottie(),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
+                      // if (vm.isLoading)
+                      //   AnimatedSwitcher(
+                      //     duration: const Duration(milliseconds: 300),
+                      //     child: Container(height: 714,
+                      //       child: IgnorePointer(
+                      //         ignoring: !vm.isLoading, // không chặn tương tác khi không loading
+                      //         child: ColoredBox(
+                      //           color: AppStyle.whiteYellow,
+                      //           child: Center(
+                      //             child: LoadingLottie(),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   )
 
                     ],
                   ),

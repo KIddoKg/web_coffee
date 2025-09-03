@@ -67,13 +67,13 @@ class _HeaderWidgetState extends State<_HeaderWidget>
                     children: [
 
 
-                      IconButton(
-                        onPressed: () {    FocusScope.of(context).unfocus();},
-                        icon: SvgPicture.asset(
-                          Assets.svg.svgFind.keyName,
-                          color: AppStyle.primaryGreen_0_81_49,
-                        ),
-                      ),
+                      // IconButton(
+                      //   onPressed: () {    FocusScope.of(context).unfocus();},
+                      //   icon: SvgPicture.asset(
+                      //     Assets.svg.svgFind.keyName,
+                      //     color: AppStyle.primaryGreen_0_81_49,
+                      //   ),
+                      // ),
                       CartClickMenuWidget(
                         key: cartMenuKey,
                         icon: Badge(

@@ -59,41 +59,41 @@ class HomeScreenVm extends ChangeNotifier {
           name: S.current.milk_tea_classic,
           country: "Vietnam",
           price: 25000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png6.keyName,
         ),
         Product(
           key: 7,
           name: S.current.milk_tea_chocolate,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png7.keyName,
         ),
         Product(
           key: 36,
           name: S.current.yaourt_passion,
           country: "Vietnam",
           price: 20000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png36.keyName,
         ),
         Product(
           key: 37,
           name: S.current.soda_lemon,
           country: "Vietnam",
           price: 35000,
-          image: Assets.png.a7.keyName,),
+          image: Assets.png.png37.keyName,),
         Product(
           key: 1,
           name: S.current.coffee_ice,
           country: "Vietnam",
           price: 20000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png1.keyName,
         ),
         Product(
           key: 2,
           name: S.current.milk_coffee_ice,
           country: "Vietnam",
           price: 25000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png2.keyName,
         ),
       ],
       S.current.coffee_drink: [
@@ -102,35 +102,35 @@ class HomeScreenVm extends ChangeNotifier {
           name: S.current.coffee_ice,
           country: "Vietnam",
           price: 20000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png1.keyName,
         ),
         Product(
           key: 2,
           name: S.current.milk_coffee_ice,
           country: "Vietnam",
           price: 25000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png2.keyName,
         ),
         Product(
           key: 3,
           name: S.current.bac_xiu_ice,
           country: "Vietnam",
           price: 25000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png3.keyName,
         ),
         Product(
           key: 4,
           name: S.current.cacao_milk_ice,
           country: "Vietnam",
           price: 25000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png4.keyName,
         ),
         Product(
           key: 5,
           name: S.current.salted_coffee,
           country: "Vietnam",
           price: 25000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png5.keyName,
         ),
       ],
       S.current.milk_tea_drink: [
@@ -139,62 +139,63 @@ class HomeScreenVm extends ChangeNotifier {
           name: S.current.milk_tea_classic,
           country: "Vietnam",
           price: 25000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png6.keyName,
         ),
         Product(
           key: 7,
           name: S.current.milk_tea_chocolate,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png7.keyName,
         ),
         Product(
           key: 8,
           name: S.current.milk_tea_butterfly_pea,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png8.keyName,
         ),
         Product(
           key: 9,
           name: S.current.milk_tea_young_rice,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png9.keyName,
         ),
-        Product(key: 10,
+        Product(
+          key: 10,
           name: S.current.milk_tea_taro,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png10.keyName,
         ),
         Product(
           key: 11,
           name: S.current.latte_matcha,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png11.keyName,
         ),
         Product(
           key: 12,
           name: S.current.latte_taro,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png12.keyName,
         ),
         Product(
           key: 13,
           name: S.current.latte_chocolate,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png13.keyName,
         ),
         Product(
           key: 14,
           name: S.current.latte_strawberry_matcha,
           country: "Vietnam",
           price: 35000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png14.keyName,
         ),
       ],
       S.current.fruit_drink: [
@@ -203,49 +204,49 @@ class HomeScreenVm extends ChangeNotifier {
           name: S.current.fruit_tea_soursop,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png15.keyName,
         ),
         Product(
           key: 16,
           name: S.current.fruit_tea_pineapple_leaf,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png16.keyName,
         ),
         Product(
           key: 17,
           name: S.current.fruit_tea_peach_lemongrass,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png17.keyName,
         ),
         Product(
           key: 18,
           name: S.current.fruit_tea_lychee,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png18.keyName,
         ),
         Product(
           key: 19,
           name: S.current.fruit_tea_lipton_plum,
           country: "Vietnam",
           price: 20000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png19.keyName,
         ),
         Product(
           key: 20,
           name: S.current.fruit_tea_kumquat,
           country: "Vietnam",
           price: 20000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png20.keyName,
         ),
         Product(
           key: 21,
           name: S.current.fruit_tea_wintermelon,
           country: "Vietnam",
           price: 20000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png21.keyName,
         ),
       ],
       S.current.juice_drink: [
@@ -254,41 +255,42 @@ class HomeScreenVm extends ChangeNotifier {
           name: S.current.juice_guava,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png22.keyName,
         ),
-        Product(key: 23,
+        Product(
+          key: 23,
           name: S.current.juice_pineapple,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png23.keyName,
         ),
         Product(
           key: 24,
           name: S.current.juice_watermelon,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png24.keyName,
         ),
         Product(
           key: 25,
           name: S.current.juice_apple,
           country: "Vietnam",
           price: 35000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png25.keyName,
         ),
         Product(
           key: 26,
           name: S.current.juice_orange,
           country: "Vietnam",
           price: 20000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png26.keyName,
         ),
         Product(
           key: 27,
           name: S.current.juice_passion,
           country: "Vietnam",
           price: 20000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png27.keyName,
         ),
       ],
       S.current.smoothie_drink: [
@@ -297,28 +299,28 @@ class HomeScreenVm extends ChangeNotifier {
           name: S.current.smoothie_avocado,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png28.keyName,
         ),
         Product(
           key: 29,
           name: S.current.smoothie_sapoche,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png29.keyName,
         ),
         Product(
           key: 30,
           name: S.current.smoothie_strawberry,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png30.keyName,
         ),
         Product(
           key: 31,
           name: S.current.smoothie_soursop,
           country: "Vietnam",
           price: 30000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png31.keyName,
         ),
       ],
       S.current.ice_blended_drink: [
@@ -327,14 +329,14 @@ class HomeScreenVm extends ChangeNotifier {
           name: S.current.blend_blueberry,
           country: "Vietnam",
           price: 35000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png32.keyName,
         ),
         Product(
           key: 33,
           name: S.current.blend_cacao_milk,
           country: "Vietnam",
           price: 35000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png33.keyName,
         ),
       ],
       S.current.yaourt_soda_drink: [
@@ -343,30 +345,31 @@ class HomeScreenVm extends ChangeNotifier {
           name: S.current.yaourt_crushed_ice,
           country: "Vietnam",
           price: 20000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png34.keyName,
         ),
-        Product(key: 35,
-
+        Product(
+          key: 35,
           name: S.current.yaourt_blueberry,
           country: "Vietnam",
           price: 25000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png35.keyName,
         ),
         Product(
           key: 36,
           name: S.current.yaourt_passion,
           country: "Vietnam",
           price: 20000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png36.keyName,
         ),
         Product(
           key: 37,
           name: S.current.soda_lemon,
           country: "Vietnam",
           price: 35000,
-          image: Assets.png.a7.keyName,
+          image: Assets.png.png37.keyName,
         ),
       ],
+
     };
 
 
@@ -385,78 +388,78 @@ class HomeScreenVm extends ChangeNotifier {
         name: S.current.milk_tea_classic,
         country: "Vietnam",
         price: 25000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png6.keyName,
       ),
       Product(
         key: 7,
         name: S.current.milk_tea_chocolate,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png7.keyName,
       ),
       Product(
         key: 36,
         name: S.current.yaourt_passion,
         country: "Vietnam",
         price: 20000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png36.keyName,
       ),
       Product(
         key: 37,
         name: S.current.soda_lemon,
         country: "Vietnam",
         price: 35000,
-        image: Assets.png.a7.keyName,),
+        image: Assets.png.png37.keyName,),
       Product(
         key: 1,
         name: S.current.coffee_ice,
         country: "Vietnam",
         price: 20000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png1.keyName,
       ),
       Product(
         key: 2,
         name: S.current.milk_coffee_ice,
         country: "Vietnam",
         price: 25000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png2.keyName,
       ),
-        ],
-      S.current.coffee_drink: [
+    ],
+    S.current.coffee_drink: [
       Product(
         key: 1,
         name: S.current.coffee_ice,
-      country: "Vietnam",
-      price: 20000,
-      image: Assets.png.a7.keyName,
+        country: "Vietnam",
+        price: 20000,
+        image: Assets.png.png1.keyName,
       ),
       Product(
         key: 2,
         name: S.current.milk_coffee_ice,
         country: "Vietnam",
         price: 25000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png2.keyName,
       ),
       Product(
         key: 3,
         name: S.current.bac_xiu_ice,
         country: "Vietnam",
         price: 25000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png3.keyName,
       ),
       Product(
         key: 4,
         name: S.current.cacao_milk_ice,
         country: "Vietnam",
         price: 25000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png4.keyName,
       ),
       Product(
         key: 5,
         name: S.current.salted_coffee,
         country: "Vietnam",
         price: 25000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png5.keyName,
       ),
     ],
     S.current.milk_tea_drink: [
@@ -465,62 +468,63 @@ class HomeScreenVm extends ChangeNotifier {
         name: S.current.milk_tea_classic,
         country: "Vietnam",
         price: 25000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png6.keyName,
       ),
       Product(
         key: 7,
         name: S.current.milk_tea_chocolate,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png7.keyName,
       ),
       Product(
         key: 8,
         name: S.current.milk_tea_butterfly_pea,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png8.keyName,
       ),
       Product(
         key: 9,
         name: S.current.milk_tea_young_rice,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png9.keyName,
       ),
-      Product(key: 10,
+      Product(
+        key: 10,
         name: S.current.milk_tea_taro,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png10.keyName,
       ),
       Product(
         key: 11,
         name: S.current.latte_matcha,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png11.keyName,
       ),
       Product(
         key: 12,
         name: S.current.latte_taro,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png12.keyName,
       ),
       Product(
         key: 13,
         name: S.current.latte_chocolate,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png13.keyName,
       ),
       Product(
         key: 14,
         name: S.current.latte_strawberry_matcha,
         country: "Vietnam",
         price: 35000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png14.keyName,
       ),
     ],
     S.current.fruit_drink: [
@@ -529,49 +533,49 @@ class HomeScreenVm extends ChangeNotifier {
         name: S.current.fruit_tea_soursop,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png15.keyName,
       ),
       Product(
         key: 16,
         name: S.current.fruit_tea_pineapple_leaf,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png16.keyName,
       ),
       Product(
         key: 17,
         name: S.current.fruit_tea_peach_lemongrass,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png17.keyName,
       ),
       Product(
         key: 18,
         name: S.current.fruit_tea_lychee,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png18.keyName,
       ),
       Product(
         key: 19,
         name: S.current.fruit_tea_lipton_plum,
         country: "Vietnam",
         price: 20000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png19.keyName,
       ),
       Product(
         key: 20,
         name: S.current.fruit_tea_kumquat,
         country: "Vietnam",
         price: 20000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png20.keyName,
       ),
       Product(
         key: 21,
         name: S.current.fruit_tea_wintermelon,
         country: "Vietnam",
         price: 20000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png21.keyName,
       ),
     ],
     S.current.juice_drink: [
@@ -580,41 +584,42 @@ class HomeScreenVm extends ChangeNotifier {
         name: S.current.juice_guava,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png22.keyName,
       ),
-      Product(key: 23,
+      Product(
+        key: 23,
         name: S.current.juice_pineapple,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png23.keyName,
       ),
       Product(
         key: 24,
         name: S.current.juice_watermelon,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png24.keyName,
       ),
       Product(
         key: 25,
         name: S.current.juice_apple,
         country: "Vietnam",
         price: 35000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png25.keyName,
       ),
       Product(
         key: 26,
         name: S.current.juice_orange,
         country: "Vietnam",
         price: 20000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png26.keyName,
       ),
       Product(
         key: 27,
         name: S.current.juice_passion,
         country: "Vietnam",
         price: 20000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png27.keyName,
       ),
     ],
     S.current.smoothie_drink: [
@@ -623,28 +628,28 @@ class HomeScreenVm extends ChangeNotifier {
         name: S.current.smoothie_avocado,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png28.keyName,
       ),
       Product(
         key: 29,
         name: S.current.smoothie_sapoche,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png29.keyName,
       ),
       Product(
         key: 30,
         name: S.current.smoothie_strawberry,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png30.keyName,
       ),
       Product(
         key: 31,
         name: S.current.smoothie_soursop,
         country: "Vietnam",
         price: 30000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png31.keyName,
       ),
     ],
     S.current.ice_blended_drink: [
@@ -653,14 +658,14 @@ class HomeScreenVm extends ChangeNotifier {
         name: S.current.blend_blueberry,
         country: "Vietnam",
         price: 35000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png32.keyName,
       ),
       Product(
         key: 33,
         name: S.current.blend_cacao_milk,
         country: "Vietnam",
         price: 35000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png33.keyName,
       ),
     ],
     S.current.yaourt_soda_drink: [
@@ -669,28 +674,28 @@ class HomeScreenVm extends ChangeNotifier {
         name: S.current.yaourt_crushed_ice,
         country: "Vietnam",
         price: 20000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png34.keyName,
       ),
-      Product(key: 35,
-
+      Product(
+        key: 35,
         name: S.current.yaourt_blueberry,
         country: "Vietnam",
         price: 25000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png35.keyName,
       ),
       Product(
         key: 36,
         name: S.current.yaourt_passion,
         country: "Vietnam",
         price: 20000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png36.keyName,
       ),
       Product(
         key: 37,
         name: S.current.soda_lemon,
         country: "Vietnam",
         price: 35000,
-        image: Assets.png.a7.keyName,
+        image: Assets.png.png37.keyName,
       ),
     ],
   };
@@ -767,9 +772,7 @@ class HomeScreenVm extends ChangeNotifier {
     );
 
     notifyListeners();
-    print(cartShop[0].key);
-    print(product.key);
-    print("Product clicked: ${product.name}");
+
     await runAddToCartAnimation(key); // animation cần GlobalKey
     await cartKey.currentState!.runCartAnimation((++_cartQuantityItems).toString());
     await saveCartShop();
@@ -823,6 +826,16 @@ class HomeScreenVm extends ChangeNotifier {
       totalPrice = cartShop.fold(0.0, (sum, item) => sum + item.price * item.amount);
       notifyListeners();
     }
+  }
+
+  Future<void> clearCartShop() async {
+    cartShop.clear();
+    totalPrice = 0;
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('cartShop', jsonEncode([]));
+
+    notifyListeners();
   }
 
   int _currentIndex = 0;
@@ -973,13 +986,14 @@ class HomeScreenVm extends ChangeNotifier {
     MyApp.setLocale(context, _locale);
     // html.window.location.reload();
 
-    print('✅ Đã chọn ngôn ngữ: $langCode');
+
     init( );
 
     scrollToTarget(home);
-    cartShop.clear();
+    await clearCartShop();
 
-    await saveCartShop();
+
+    init( );
     notifyListeners();
   }
 
@@ -1022,6 +1036,13 @@ class HomeScreenVm extends ChangeNotifier {
       await launchUrl(telUri);
     } else {
       throw 'Could not launch $phoneNumber';
+    }
+  }
+
+  Future<void> openLink(String url) async {
+    final uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw Exception('Không mở được link: $url');
     }
   }
 }

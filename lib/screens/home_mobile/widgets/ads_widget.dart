@@ -13,7 +13,7 @@ class _AdsWidget extends StatelessWidget {
       return Container(
         // height: 1000,
         key: vm.ads,
-        color: AppStyle.primaryGreen_0_81_49.withOpacity(0.1),
+        color: AppStyle.whiteYellow,
         child: Padding(
           padding: AppStyle.padding_LR_32(),
           child: Column(

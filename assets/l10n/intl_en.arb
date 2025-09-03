@@ -81,5 +81,7 @@
   "total_pay": "Total pay",
   "zalo": "Order in Zalo",
   "thanks": "Thank you for your order! Please copy it below and send via Zalo.",
-  "info": "Information"
+  "info": "Information",
+  "title_app_food":"Enjoy unexpected promotions when ordering through ordering applications.",
+  "detail_app_food": "Currently, the restaurant has linked with the sales channels below."
 }

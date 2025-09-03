@@ -28,6 +28,8 @@ class AppStyle {
   static Color primaryNeutral = const Color(0XFFFFFFFF).withOpacity(0.65);
   static Color whiteBg = Colors.white;
   static Color whiteYellow = const Color.fromRGBO(250, 240, 230, 1.0);
+  static Color primaryColorYellow_244_195_66 = const Color.fromRGBO(244, 195, 66, 1.0);
+  static Color primaryColorRed_219_89_59 = const Color.fromRGBO(219, 89, 59, 1.0);
   static Color blackLite = const Color.fromRGBO(30, 30, 30, 1.0);
   static Color greyBg = Colors.grey;
   static Color backgroundCardColor = '#FCFCFD'.toColor();

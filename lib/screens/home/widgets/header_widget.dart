@@ -88,13 +88,13 @@ class _HeaderWidgetState extends State<_HeaderWidget>
                     children: [
 
 
-                      IconButton(
-                        onPressed: () {    FocusScope.of(context).unfocus();},
-                        icon: SvgPicture.asset(
-                          Assets.svg.svgFind.keyName,
-                          color: AppStyle.primaryGreen_0_81_49,
-                        ),
-                      ),
+                      // IconButton(
+                      //   onPressed: () {    FocusScope.of(context).unfocus();},
+                      //   icon: SvgPicture.asset(
+                      //     Assets.svg.svgFind.keyName,
+                      //     color: AppStyle.primaryGreen_0_81_49,
+                      //   ),
+                      // ),
                       CartHoverMenuWidget(
                         key: cartMenuKeyA,
 
@@ -209,13 +209,13 @@ class _HeaderWidgetState extends State<_HeaderWidget>
                       //     backgroundColor: Colors.red,
                       //   ),
                       // ),
-                      IconButton(
-                        onPressed: () {    FocusScope.of(context).unfocus();},
-                        icon: SvgPicture.asset(
-                          Assets.svg.svgPerson.keyName,
-                          color: AppStyle.primaryGreen_0_81_49,
-                        ),
-                      ),
+                      // IconButton(
+                      //   onPressed: () {    FocusScope.of(context).unfocus();},
+                      //   icon: SvgPicture.asset(
+                      //     Assets.svg.svgPerson.keyName,
+                      //     color: AppStyle.primaryGreen_0_81_49,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

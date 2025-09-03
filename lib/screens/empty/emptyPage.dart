@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:xanh_coffee/share/app_imports.dart';
 
 import '../../generated/l10n.dart';
 import '../../share/share_widget.dart';
@@ -11,14 +12,14 @@ class EmptyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Material(
         child: Container(
-          color: KSTheme.of(context).color.systemGreen,
+          color: AppStyle.whiteYellow,
           child: Center(
               child:    KSText(
-            "S.current.content_does_not_exist",
+            "Xanh Coffee",
             style: KSTheme.of(context)
                 .style
-                .ts12w400
-                .copyWith(color: Colors.white),
+                .ts12w700
+                .copyWith(color: AppStyle.primaryGreen_0_81_49),
           )),
         ),
       );

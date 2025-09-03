@@ -10,7 +10,7 @@ class _AllProductWidget extends StatelessWidget {
     final height = SizeConfig.screenHeight!;
 
     return Consumer<HomeMobileScreenVm>(builder: (context, vm, child) {
-      final int gridItemCount = 6;
+      final int gridItemCount = 4;
       final List<Product?> displayProducts =
           List<Product?>.from(vm.currentProducts)
             ..addAll(List<Product?>.filled(
@@ -101,7 +101,7 @@ class _AllProductWidget extends StatelessWidget {
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: gridItemCount,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: width < 800 ? 2 : 3,
+                          crossAxisCount:  2  ,
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 16,
                           mainAxisExtent: 300,
@@ -115,21 +115,21 @@ class _AllProductWidget extends StatelessWidget {
                     ),
 
                     // Loading overlay
-                    if (vm.isLoading)
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        child: Container(height: 935,
-                          child: IgnorePointer(
-                            ignoring: !vm.isLoading, // không chặn tương tác khi không loading
-                            child: ColoredBox(
-                              color: AppStyle.whiteYellow,
-                              child: Center(
-                                child: LoadingLottie(),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
+                    // if (vm.isLoading)
+                    //   AnimatedSwitcher(
+                    //     duration: const Duration(milliseconds: 300),
+                    //     child: Container(height: 620,
+                    //       child: IgnorePointer(
+                    //         ignoring: !vm.isLoading, // không chặn tương tác khi không loading
+                    //         child: ColoredBox(
+                    //           color: AppStyle.whiteYellow,
+                    //           child: Center(
+                    //             child: LoadingLottie(),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   )
 
                   ],
                 ),
@@ -142,13 +142,13 @@ class _AllProductWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        color:AppStyle.primaryGreen_0_81_49.withOpacity(0.1),
+                        // color:AppStyle.primaryGreen_0_81_49.withOpacity(0.1),
                         onPressed: vm.currentPage > 0 ? vm.prevPage : null,
                         icon: const Icon(Icons.arrow_back,),
                       ),
                       Text("${vm.currentPage + 1} / ${vm.totalPages}"),
                       IconButton(
-                        color:AppStyle.primaryGreen_0_81_49.withOpacity(0.1),
+                        // color:AppStyle.primaryGreen_0_81_49.withOpacity(0.1),
 
                         onPressed: vm.currentPage < vm.totalPages - 1
                             ? vm.nextPage
@@ -203,6 +203,7 @@ class _ProductCardState extends State<ProductCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 16,),
             // 📸 Hình sản phẩm
             Expanded(
               child: ClipRRect(

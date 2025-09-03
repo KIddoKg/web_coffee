@@ -32,6 +32,7 @@ part './widgets/about_widget.dart';
 part './widgets/all_product_widget.dart';
 part './widgets/ads_widget.dart';
 part './widgets/feedback_widget.dart';
+part './widgets/app_food_widget.dart';
 
 class HomeMobileScreen extends StatefulWidget {
   const HomeMobileScreen({super.key});
@@ -116,6 +117,7 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
 
                   const SliverToBoxAdapter(child: _HeaderWidget()),
                   const SliverToBoxAdapter(child: _AllProductWidget()),
+                  const SliverToBoxAdapter(child: _AppFoodWidget()),
                   const SliverToBoxAdapter(child: _AdsWidget()),
                   const SliverToBoxAdapter(child: _FeedbackWidget()),
 
