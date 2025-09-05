@@ -10,17 +10,22 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:web_smooth_scroll/web_smooth_scroll.dart';
 import 'package:xanh_coffee/helper/format/helper.dart';
+
 import 'package:xanh_coffee/screens/home/viewModel/home_screen_vm.dart';
 import 'package:xanh_coffee/share/share_on_app.dart';
 import 'package:xanh_coffee/share/size_configs.dart';
 
+import '../admin/admin_main_screen.dart';
+import '../admin/widgets/product_management_widget.dart';
 import '../../generated/fonts.gen.dart';
 import '../../generated/l10n.dart';
 import '../../share/app_imports.dart';
 import '../../share/text_style.dart';
 import 'package:lottie/lottie.dart';
 
+import 'model/blog_model.dart';
 import 'model/product_model.dart';
+import 'model/qrcode_model.dart';
 
 part './widgets/header_widget.dart';
 part './widgets/confirm_widget.dart';
@@ -62,28 +67,23 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
   late final ScrollController _scrollController;
   @override
   void initState() {
-
     _scrollController = ScrollController();
     // TODO: implement initState
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-
-
       // Lắng nghe scroll
       _scrollController.addListener(() {
-        
         // Gọi hàm ViewModel khi scroll
-
       });
       final vm = Provider.of<HomeScreenVm>(context, listen: false);
 
-      vm.init( );
+      vm.init();
       vm.loadSavedLocale(context);
-
     });
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeScreenVm>(
@@ -103,22 +103,19 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
           },
           child: KSScaffold(
             backgroundColor: AppStyle.whiteYellow,
-            onTap: (){
+            onTap: () {
               FocusScope.of(context).unfocus();
             },
             child: WebSmoothScroll(
-              controller:_scrollController,
+              controller: _scrollController,
               child: CustomScrollView(
                 controller: _scrollController,
                 slivers: [
-
                   const SliverToBoxAdapter(child: _HeaderWidget()),
                   const SliverToBoxAdapter(child: _AllProductWidget()),
                   const SliverToBoxAdapter(child: _AppFoodWidget()),
                   const SliverToBoxAdapter(child: _AdsWidget()),
-
                   const SliverToBoxAdapter(child: _FeedbackWidget()),
-
                   const SliverToBoxAdapter(child: _ConfirmWidget()),
                   const SliverToBoxAdapter(child: _FooterWidget()),
                 ],
@@ -129,7 +126,4 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
       },
     );
   }
-
 }
-
-

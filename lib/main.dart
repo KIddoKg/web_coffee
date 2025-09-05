@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:xanh_coffee/services/supabase/services_supabase.dart';
 
 import 'app.dart';
 import 'config/env.dart';
@@ -17,11 +18,14 @@ import 'helper/di/di.dart';
 //   );
 // }
 import 'dart:html' as html;
+
 void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
     await initDI(ENVType.prod);
+
+    await SupabaseService.initialize();
 
     runApp(
       MyApp(shouldShowDebugButton: Flavor.flavorType.isProd),
@@ -41,12 +45,13 @@ void main() async {
     // });
 
     forceSetTitle();
-    startTitleKeeper()
-    ;
+    startTitleKeeper();
   }, (error, trace) {
-    log('[DEV] Error while running app', time: DateTime.now(), error: error, stackTrace: trace);
+    log('[DEV] Error while running app',
+        time: DateTime.now(), error: error, stackTrace: trace);
   });
 }
+
 void startTitleKeeper() {
   Timer.periodic(const Duration(seconds: 2), (timer) {
     if (html.document.title != S.current.name_coffee) {
@@ -55,14 +60,12 @@ void startTitleKeeper() {
   });
 }
 
-
 void forceSetTitle() {
   html.document.title = S.current.name_coffee;
 }
 
 void showSplashFor(Duration duration) {
   final splash = html.document.getElementById('loading-splash');
-
 
   if (splash != null) {
     // Reset style trước khi hiển
@@ -82,4 +85,3 @@ void showSplashFor(Duration duration) {
     });
   }
 }
-

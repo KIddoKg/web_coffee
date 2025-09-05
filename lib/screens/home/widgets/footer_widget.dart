@@ -25,6 +25,35 @@ class _FooterWidgetState extends State<_FooterWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            Row(
+              children: [
+                KSButton(
+                  height: 100,
+                  "Admin Dashboard",
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AdminMainScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(width: 16),
+                KSButton(
+                  height: 100,
+                  backgroundColor: Colors.white,
+                  "Quản lý Sản phẩm",
+                  fontColor: Colors.brown,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ProductManagementWidget(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -65,32 +94,32 @@ class _FooterWidgetState extends State<_FooterWidget> {
                           height: 16,
                         ),
                         HoverText(
-                          text:  S.current.address,
-                          onTap: (){
-                           vm.openMap(10.7259948,106.6153045);
+                          text: S.current.address,
+                          onTap: () {
+                            vm.openMap(10.7259948, 106.6153045);
                           },
-                          style:  KSTheme.of(context).style.ts14w400.copyWith(
+                          style: KSTheme.of(context).style.ts14w400.copyWith(
                               color: AppStyle.whiteBg,
                               fontFamily: FontFamily.roboto),
                           normalColor: AppStyle.whiteBg,
-                          hoverColor: AppStyle.primaryGreen_0_81_49, // màu khi hover
+                          hoverColor:
+                              AppStyle.primaryGreen_0_81_49, // màu khi hover
                         ),
-
                         SizedBox(
                           height: 16,
                         ),
                         HoverText(
-                          text:  "090 338 32 36",
-                          onTap: (){
+                          text: "090 338 32 36",
+                          onTap: () {
                             vm.callPhoneNumber("0903383236");
                           },
-                          style:  KSTheme.of(context).style.ts14w400.copyWith(
+                          style: KSTheme.of(context).style.ts14w400.copyWith(
                               color: AppStyle.whiteBg,
                               fontFamily: FontFamily.roboto),
                           normalColor: AppStyle.whiteBg,
-                          hoverColor: AppStyle.primaryGreen_0_81_49, // màu khi hover
+                          hoverColor:
+                              AppStyle.primaryGreen_0_81_49, // màu khi hover
                         ),
-
                       ],
                     ),
                   ),
@@ -110,79 +139,78 @@ class _FooterWidgetState extends State<_FooterWidget> {
                         SizedBox(
                           height: 24,
                         ),
-
                         HoverText(
                           text: S.current.home,
-                          onTap: (){
+                          onTap: () {
                             vm.scrollToTarget(vm.home);
                           },
-                          style:  KSTheme.of(context).style.ts14w500.copyWith(
+                          style: KSTheme.of(context).style.ts14w500.copyWith(
                               color: AppStyle.whiteBg,
                               fontFamily: FontFamily.roboto),
                           normalColor: AppStyle.whiteBg,
-                          hoverColor: AppStyle.primaryGreen_0_81_49, // màu khi hover
+                          hoverColor:
+                              AppStyle.primaryGreen_0_81_49, // màu khi hover
                         ),
-
                         SizedBox(
                           height: 24,
                         ),
                         HoverText(
                           text: S.current.about,
-                          onTap: (){
+                          onTap: () {
                             vm.scrollToTarget(vm.about);
                           },
-                          style:  KSTheme.of(context).style.ts14w500.copyWith(
+                          style: KSTheme.of(context).style.ts14w500.copyWith(
                               color: AppStyle.whiteBg,
                               fontFamily: FontFamily.roboto),
                           normalColor: AppStyle.whiteBg,
-                          hoverColor: AppStyle.primaryGreen_0_81_49, // màu khi hover
+                          hoverColor:
+                              AppStyle.primaryGreen_0_81_49, // màu khi hover
                         ),
-
                         SizedBox(
                           height: 24,
                         ),
                         HoverText(
                           text: S.current.products,
-                          onTap: (){
+                          onTap: () {
                             vm.scrollToTarget(vm.product);
                           },
-                          style:  KSTheme.of(context).style.ts14w500.copyWith(
+                          style: KSTheme.of(context).style.ts14w500.copyWith(
                               color: AppStyle.whiteBg,
                               fontFamily: FontFamily.roboto),
                           normalColor: AppStyle.whiteBg,
-                          hoverColor: AppStyle.primaryGreen_0_81_49, // màu khi hover
+                          hoverColor:
+                              AppStyle.primaryGreen_0_81_49, // màu khi hover
                         ),
-
                         SizedBox(
                           height: 24,
                         ),
                         HoverText(
                           text: S.current.advertisement,
-                          onTap: (){
+                          onTap: () {
                             vm.scrollToTarget(vm.ads);
                           },
-                          style:  KSTheme.of(context).style.ts14w500.copyWith(
+                          style: KSTheme.of(context).style.ts14w500.copyWith(
                               color: AppStyle.whiteBg,
                               fontFamily: FontFamily.roboto),
                           normalColor: AppStyle.whiteBg,
-                          hoverColor: AppStyle.primaryGreen_0_81_49, // màu khi hover
+                          hoverColor:
+                              AppStyle.primaryGreen_0_81_49, // màu khi hover
                         ),
-
                         SizedBox(
                           height: 24,
                         ),
                         HoverText(
                           text: S.current.feedback,
-                          onTap: (){
+                          onTap: () {
                             vm.scrollToTarget(vm.feedback);
                           },
-                          style:  KSTheme.of(context).style.ts14w500.copyWith(
+                          style: KSTheme.of(context).style.ts14w500.copyWith(
                               color: AppStyle.whiteBg,
                               fontFamily: FontFamily.roboto),
                           normalColor: AppStyle.whiteBg,
-                          hoverColor: AppStyle.primaryGreen_0_81_49, // màu khi hover
+                          hoverColor:
+                              AppStyle.primaryGreen_0_81_49, // màu khi hover
                         ),
-
                       ],
                     ),
                   ),
@@ -213,14 +241,19 @@ class _FooterWidgetState extends State<_FooterWidget> {
                             return ChoiceChip(
                               surfaceTintColor: Colors.transparent,
                               label: KSText(
-                                lang == 'vi' ? S.current.vietnamese : S.current.english,
+                                lang == 'vi'
+                                    ? S.current.vietnamese
+                                    : S.current.english,
                               ),
                               selected: isSelected,
                               onSelected: (_) => vm.setLang(context, lang),
-                              labelStyle: KSTheme.of(context).style.ts15w500.copyWith(
-                                color: isSelected ? Colors.white : Colors.white,
-                                fontFamily: FontFamily.roboto,
-                              ),
+                              labelStyle:
+                                  KSTheme.of(context).style.ts15w500.copyWith(
+                                        color: isSelected
+                                            ? Colors.white
+                                            : Colors.white,
+                                        fontFamily: FontFamily.roboto,
+                                      ),
                               selectedColor: AppStyle.primaryGreen_0_81_49,
                               backgroundColor: Colors.black,
                               showCheckmark: false,

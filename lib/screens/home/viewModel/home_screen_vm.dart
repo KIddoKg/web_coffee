@@ -6,6 +6,14 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:xanh_coffee/screens/home/home_screen.dart';
 import 'package:xanh_coffee/screens/home/model/feedback_model.dart';
 import 'package:xanh_coffee/screens/home/model/product_model.dart';
+import 'package:xanh_coffee/screens/home/model/category_model.dart';
+import 'package:xanh_coffee/screens/home/model/blog_model.dart';
+import 'package:xanh_coffee/screens/home/model/qrcode_model.dart';
+import 'package:xanh_coffee/services/supabase/product_service.dart';
+import 'package:xanh_coffee/services/supabase/category_service.dart';
+import 'package:xanh_coffee/services/supabase/feedback_service.dart';
+import 'package:xanh_coffee/services/supabase/blog_service.dart';
+import 'package:xanh_coffee/services/supabase/qrcode_service.dart';
 import 'package:xanh_coffee/share/share_on_app.dart';
 
 import '../../../app.dart';
@@ -14,364 +22,451 @@ import '../../../main.dart';
 import '../../../share/app_imports.dart';
 
 class HomeScreenVm extends ChangeNotifier {
-
-
   /// 🔄 Reset all data
   void reset() {}
 
+  // Database-related properties
+  List<Category> _categories = [];
+  List<Product> _allProducts = [];
+  List<FeedbackModel> _feedbacks = [];
+  List<BlogModel> _blogs = [];
+  List<QRCodeModel> _qrCodes = [];
+  bool _isLoadingCategories = false;
+  bool _isLoadingProducts = false;
+  bool _isLoadingFeedbacks = false;
+  bool _isLoadingBlogs = false;
+  bool _isLoadingQRCodes = false;
+  String? _errorMessage;
+
+  // Getters for database data
+  List<Category> get categories => _categories;
+
+  List<Product> get allProducts => _allProducts;
+
+  List<FeedbackModel> get feedbacks => _feedbacks;
+
+  List<BlogModel> get blogs => _blogs;
+
+  List<QRCodeModel> get qrCodes => _qrCodes;
+
+  bool get isLoadingCategories => _isLoadingCategories;
+
+  bool get isLoadingProducts => _isLoadingProducts;
+
+  bool get isLoadingFeedbacks => _isLoadingFeedbacks;
+
+  bool get isLoadingBlogs => _isLoadingBlogs;
+
+  bool get isLoadingQRCodes => _isLoadingQRCodes;
+
+  String? get errorMessage => _errorMessage;
+
   List<String> filters = [
-    S.current.best_seller,
-    S.current.milk_tea_drink,
-    S.current.coffee_drink,
-    S.current.fruit_drink,
-    S.current.juice_drink,
-    S.current.smoothie_drink,
-    S.current.ice_blended_drink,
-    S.current.yaourt_soda_drink,
+    ""
   ];
 
-  void init( ) {
+  void init() {
     _selectedFilterIndex = 0;
     _currentPage = 0;
     _isNext = true;
     loadCartShop();
     resetFilter();
+    // Load data from database
+    _loadCategoriesFromDatabase();
+    _loadProductsFromDatabase();
+    _loadFeedbacksFromDatabase();
+    _loadBlogsFromDatabase();
+    _loadQRCodesFromDatabase();
 
     notifyListeners(); // báo cho UI update ngay lập tức
   }
 
+  /// Load categories from database
+  Future<void> _loadCategoriesFromDatabase() async {
+    try {
+      _isLoadingCategories = true;
+      _errorMessage = null;
+      notifyListeners();
+
+      _categories = await CategoryService.getAllCategories(isActive: true);
+
+      // Update filters based on active categories
+      _updateFiltersBasedOnActiveCategories();
+
+      debugPrint('Loaded ${_categories.length} categories from database');
+
+      _isLoadingCategories = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoadingCategories = false;
+      _errorMessage = 'Lỗi tải danh mục: $e';
+      debugPrint(_errorMessage);
+      notifyListeners();
+    }
+  }
+
+  /// Update filters based on active categories
+  void _updateFiltersBasedOnActiveCategories() {
+    List<String> activeFilters = [];
+
+    if (selectedLang == "vi") {
+      activeFilters = ["Bán chạy"];
+    } else {
+      activeFilters = ["Best Seller"];
+    }
+
+    // Add filters for active categories using current language
+    for (final category in _categories) {
+      if (category.isActive) {
+        final filterKey = getCategoryDisplayName(category);
+        if (!activeFilters.contains(filterKey)) {
+          activeFilters.add(filterKey);
+        }
+      }
+    }
+
+    filters = activeFilters;
+    debugPrint(
+        'Updated filters based on active categories: ${filters.length} filters');
+  }
+
+  /// Load blogs from database
+  Future<void> _loadBlogsFromDatabase() async {
+    try {
+      _isLoadingBlogs = true;
+      _errorMessage = null;
+      notifyListeners();
+
+      _blogs = await BlogService.getAllBlogs();
+
+      debugPrint('Loaded ${_blogs.length} blogs from database');
+
+      _isLoadingBlogs = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoadingBlogs = false;
+      _errorMessage = 'Lỗi tải blogs: $e';
+      debugPrint(_errorMessage);
+
+      // Set empty list if database fails
+      _blogs = [];
+
+      notifyListeners();
+    }
+  }
+
+  /// Load QR codes from database
+  Future<void> _loadQRCodesFromDatabase() async {
+    try {
+      _isLoadingQRCodes = true;
+      _errorMessage = null;
+      notifyListeners();
+
+      _qrCodes = await QRCodeService.getAllQRCodes();
+
+      debugPrint('Loaded ${_qrCodes.length} QR codes from database');
+
+      _isLoadingQRCodes = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoadingQRCodes = false;
+      _errorMessage = 'Lỗi tải QR codes: $e';
+      debugPrint(_errorMessage);
+
+      // Set empty list if database fails
+      _qrCodes = [];
+
+      notifyListeners();
+    }
+  }
+
+  /// Load feedbacks from database
+  Future<void> _loadFeedbacksFromDatabase() async {
+    try {
+      _isLoadingFeedbacks = true;
+      _errorMessage = null;
+      notifyListeners();
+
+      _feedbacks = await FeedbackService.getTopFeedbacks(limit: 10);
+
+      // Reset current index if necessary
+      if (_feedbacks.isNotEmpty && _currentIndex >= _feedbacks.length) {
+        _currentIndex = 0;
+      }
+
+      // Update locks based on new feedbacks
+      _updateLocks();
+
+      debugPrint('Loaded ${_feedbacks.length} feedbacks from database');
+
+      _isLoadingFeedbacks = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoadingFeedbacks = false;
+      _errorMessage = 'Lỗi tải feedbacks: $e';
+      debugPrint(_errorMessage);
+
+      // Load default feedback if database fails
+      _feedbacks = [
+        FeedbackModel(
+          title: "AWESOME COFFEE",
+          reviewer: "MICHAEL T",
+          date: "03/10",
+          comment:
+              "fantastic, solid coffee! 10/10. highly recommend. this coffee is the best around",
+          rating: 5.0,
+        ),
+      ];
+      _currentIndex = 0;
+      _updateLocks();
+
+      notifyListeners();
+    }
+  }
+
+  /// Load products from database
+  Future<void> _loadProductsFromDatabase() async {
+    try {
+      _isLoadingProducts = true;
+      _errorMessage = null;
+      notifyListeners();
+
+      // Load all products (only active ones)
+      final allProductsData = await ProductService.getActiveProducts();
+      _allProducts = allProductsData
+          .map((data) => ProductService.fromSupabaseData(data))
+          .toList(); // Already filtered for active products in database query
+
+      // Load best seller products (only active ones)
+      final bestSellerData = await ProductService.getBestSellerProducts();
+      final bestSellerProducts = bestSellerData
+          .map((data) => ProductService.fromSupabaseData(data))
+          .toList(); // Already filtered for active products in database query
+
+      // Reset productsByFilter and populate with database data
+      productsByFilter.clear();
+      productsByCategoryId.clear();
+
+      // Add best sellers
+      if (selectedLang == "vi") {
+        productsByFilter["Bán chạy"] = bestSellerProducts;
+
+        // Group products by category ID for easier language switching
+        for (final product in _allProducts) {
+          if (product.categoryId != null) {
+            if (productsByCategoryId[product.categoryId!] == null) {
+              productsByCategoryId[product.categoryId!] = [];
+            }
+            productsByCategoryId[product.categoryId!]!.add(product);
+          }
+        }
+
+        // Map to display names for Vietnamese
+        for (final category in _categories) {
+          if (category.isActive && productsByCategoryId[category.id] != null) {
+            productsByFilter[category.name] =
+                productsByCategoryId[category.id]!;
+          }
+        }
+      } else {
+        productsByFilter["Best Seller"] = bestSellerProducts;
+
+        // Group products by category ID for easier language switching
+        for (final product in _allProducts) {
+          if (product.categoryId != null) {
+            if (productsByCategoryId[product.categoryId!] == null) {
+              productsByCategoryId[product.categoryId!] = [];
+            }
+            productsByCategoryId[product.categoryId!]!.add(product);
+          }
+        }
+
+        // Map to display names for English
+        for (final category in _categories) {
+          if (category.isActive &&
+              category.nameEn != null &&
+              productsByCategoryId[category.id] != null) {
+            productsByFilter[category.nameEn!] =
+                productsByCategoryId[category.id]!;
+          }
+        }
+      }
+
+      debugPrint('Loaded ${_allProducts.length} products from database');
+
+      _isLoadingProducts = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoadingProducts = false;
+      _errorMessage = 'Lỗi tải sản phẩm: $e';
+      debugPrint(_errorMessage);
+      notifyListeners();
+    }
+  }
+
+  /// Refresh data from database
+  Future<void> refreshData() async {
+    await Future.wait([
+      _loadCategoriesFromDatabase(),
+      _loadProductsFromDatabase(),
+      _loadFeedbacksFromDatabase(),
+      _loadBlogsFromDatabase(),
+      _loadQRCodesFromDatabase(),
+    ]);
+  }
+
+  // /// Get featured blogs for current language
+  // List<BlogModel> getFeaturedBlogs({int limit = 3}) {
+  //   final featured = _blogs.take(limit).toList();
+  //   return featured;
+  // }
+  //
+  // /// Get latest blogs for current language
+  // List<BlogModel> getLatestBlogs({int limit = 5}) {
+  //   // Sort by created_at if available, otherwise by id
+  //   final sorted = List<BlogModel>.from(_blogs);
+  //   sorted.sort((a, b) {
+  //     if (a.createdAt != null && b.createdAt != null) {
+  //       return b.createdAt!.compareTo(a.createdAt!);
+  //     }
+  //     return (b.id ?? 0).compareTo(a.id ?? 0);
+  //   });
+  //   return sorted.take(limit).toList();
+  // }
+  //
+  // /// Get blog by ID
+  // BlogModel? getBlogById(int id) {
+  //   try {
+  //     return _blogs.firstWhere((blog) => blog.id == id);
+  //   } catch (e) {
+  //     return null;
+  //   }
+  // }
+
+  // }
+
+  // QR Codes helper methods
+
+  /// Get all QR codes
+  // List<QRCodeModel> getAllQRCodes() {
+  //   return _qrCodes;
+  // }
+
+  // /// Get QR codes by color
+  // List<QRCodeModel> getQRCodesByColor(String color) {
+  //   return _qrCodes.where((qr) => qr.color == color).toList();
+  // }
+  //
+  // /// Get QR code by ID
+  // QRCodeModel? getQRCodeById(int id) {
+  //   try {
+  //     return _qrCodes.firstWhere((qr) => qr.id == id);
+  //   } catch (e) {
+  //     return null;
+  //   }
+  // }
+  //
+  // /// Search QR codes by link URL
+  // List<QRCodeModel> searchQRCodes(String query) {
+  //   if (query.trim().isEmpty) return _qrCodes;
+  //
+  //   final lowerQuery = query.toLowerCase();
+  //   return _qrCodes.where((qr) =>
+  //     qr.linkUrl.toLowerCase().contains(lowerQuery)
+  //   ).toList();
+  // }
+  //
+  // /// Get QR codes with images
+  // List<QRCodeModel> getQRCodesWithImages() {
+  //   return _qrCodes.where((qr) =>
+  //     qr.imageUrl != null && qr.imageUrl!.isNotEmpty
+  //   ).toList();
+  // }
+  //
+  // /// Get QR codes without images
+  // List<QRCodeModel> getQRCodesWithoutImages() {
+  //   return _qrCodes.where((qr) =>
+  //     qr.imageUrl == null || qr.imageUrl!.isEmpty
+  //   ).toList();
+  // }
+  //
+  // /// Get random QR codes
+  // List<QRCodeModel> getRandomQRCodes({int limit = 5}) {
+  //   final shuffled = List<QRCodeModel>.from(_qrCodes)..shuffle();
+  //   return shuffled.take(limit).toList();
+  // }
+  //
+  // /// Get latest QR codes
+  // List<QRCodeModel> getLatestQRCodes({int limit = 5}) {
+  //   final sorted = List<QRCodeModel>.from(_qrCodes);
+  //   sorted.sort((a, b) {
+  //     if (a.createdAt != null && b.createdAt != null) {
+  //       return b.createdAt!.compareTo(a.createdAt!);
+  //     }
+  //     return (b.id ?? 0).compareTo(a.id ?? 0);
+  //   });
+  //   return sorted.take(limit).toList();
+  // }
+
+  /// Refresh QR codes only
+  // Future<void> refreshQRCodes() async {
+  //   await _loadQRCodesFromDatabase();
+  // }
+
+  /// Sync hardcoded data to database (use this once to populate database)
+  Future<void> syncHardcodedDataToDatabase() async {
+    try {
+      // Create default categories if not exist
+      final existingCategories = await CategoryService.getAllCategories();
+      final categoryNames = [];
+
+      for (String categoryName in categoryNames) {
+        bool exists = existingCategories.any((cat) => cat.name == categoryName);
+        if (!exists) {
+          await CategoryService.addCategory(
+            name: categoryName,
+            description: 'Danh mục $categoryName',
+            isActive: true,
+          );
+          debugPrint('Added category: $categoryName');
+        }
+      }
+
+      // Note: Product syncing should be done carefully to avoid duplicates
+      // You can uncomment and modify this if you have hardcoded products to sync
+      /*
+      if (productsByFilter.isNotEmpty) {
+        await ProductService.syncAllProductsToSupabase(productsByFilter);
+        debugPrint('Synced all products to database');
+      }
+      */
+
+      await refreshData();
+    } catch (e) {
+      debugPrint('Error syncing data to database: $e');
+      _errorMessage = 'Lỗi đồng bộ dữ liệu: $e';
+      notifyListeners();
+    }
+  }
+
   void resetFilter() {
-    filters = [
-      S.current.best_seller,
-      S.current.milk_tea_drink,
-      S.current.coffee_drink,
-      S.current.fruit_drink,
-      S.current.juice_drink,
-      S.current.smoothie_drink,
-      S.current.ice_blended_drink,
-      S.current.yaourt_soda_drink,
-    ];
-    productsByFilter = {
-      S.current.best_seller: [
+    // Don't override filters if they've been updated based on active categories
+    // Only reset if categories haven't been loaded yet
+    if (_categories.isEmpty) {
+      filters = [
+        "Best Seller",
+        "Trà sữa",
+        "Đồ uống cà phê",
+        "Trà trái cây",
+        "Nước ép",
+        "Sinh tố",
+        "Đá xay",
+        "Yaourt & Soda",
+      ];
+    }
 
-        Product(
-          key: 6,
-          name: S.current.milk_tea_classic,
-          country: "Vietnam",
-          price: 25000,
-          image: Assets.png.png6.keyName,
-        ),
-        Product(
-          key: 7,
-          name: S.current.milk_tea_chocolate,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png7.keyName,
-        ),
-        Product(
-          key: 36,
-          name: S.current.yaourt_passion,
-          country: "Vietnam",
-          price: 20000,
-          image: Assets.png.png36.keyName,
-        ),
-        Product(
-          key: 37,
-          name: S.current.soda_lemon,
-          country: "Vietnam",
-          price: 35000,
-          image: Assets.png.png37.keyName,),
-        Product(
-          key: 1,
-          name: S.current.coffee_ice,
-          country: "Vietnam",
-          price: 20000,
-          image: Assets.png.png1.keyName,
-        ),
-        Product(
-          key: 2,
-          name: S.current.milk_coffee_ice,
-          country: "Vietnam",
-          price: 25000,
-          image: Assets.png.png2.keyName,
-        ),
-      ],
-      S.current.coffee_drink: [
-        Product(
-          key: 1,
-          name: S.current.coffee_ice,
-          country: "Vietnam",
-          price: 20000,
-          image: Assets.png.png1.keyName,
-        ),
-        Product(
-          key: 2,
-          name: S.current.milk_coffee_ice,
-          country: "Vietnam",
-          price: 25000,
-          image: Assets.png.png2.keyName,
-        ),
-        Product(
-          key: 3,
-          name: S.current.bac_xiu_ice,
-          country: "Vietnam",
-          price: 25000,
-          image: Assets.png.png3.keyName,
-        ),
-        Product(
-          key: 4,
-          name: S.current.cacao_milk_ice,
-          country: "Vietnam",
-          price: 25000,
-          image: Assets.png.png4.keyName,
-        ),
-        Product(
-          key: 5,
-          name: S.current.salted_coffee,
-          country: "Vietnam",
-          price: 25000,
-          image: Assets.png.png5.keyName,
-        ),
-      ],
-      S.current.milk_tea_drink: [
-        Product(
-          key: 6,
-          name: S.current.milk_tea_classic,
-          country: "Vietnam",
-          price: 25000,
-          image: Assets.png.png6.keyName,
-        ),
-        Product(
-          key: 7,
-          name: S.current.milk_tea_chocolate,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png7.keyName,
-        ),
-        Product(
-          key: 8,
-          name: S.current.milk_tea_butterfly_pea,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png8.keyName,
-        ),
-        Product(
-          key: 9,
-          name: S.current.milk_tea_young_rice,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png9.keyName,
-        ),
-        Product(
-          key: 10,
-          name: S.current.milk_tea_taro,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png10.keyName,
-        ),
-        Product(
-          key: 11,
-          name: S.current.latte_matcha,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png11.keyName,
-        ),
-        Product(
-          key: 12,
-          name: S.current.latte_taro,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png12.keyName,
-        ),
-        Product(
-          key: 13,
-          name: S.current.latte_chocolate,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png13.keyName,
-        ),
-        Product(
-          key: 14,
-          name: S.current.latte_strawberry_matcha,
-          country: "Vietnam",
-          price: 35000,
-          image: Assets.png.png14.keyName,
-        ),
-      ],
-      S.current.fruit_drink: [
-        Product(
-          key: 15,
-          name: S.current.fruit_tea_soursop,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png15.keyName,
-        ),
-        Product(
-          key: 16,
-          name: S.current.fruit_tea_pineapple_leaf,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png16.keyName,
-        ),
-        Product(
-          key: 17,
-          name: S.current.fruit_tea_peach_lemongrass,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png17.keyName,
-        ),
-        Product(
-          key: 18,
-          name: S.current.fruit_tea_lychee,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png18.keyName,
-        ),
-        Product(
-          key: 19,
-          name: S.current.fruit_tea_lipton_plum,
-          country: "Vietnam",
-          price: 20000,
-          image: Assets.png.png19.keyName,
-        ),
-        Product(
-          key: 20,
-          name: S.current.fruit_tea_kumquat,
-          country: "Vietnam",
-          price: 20000,
-          image: Assets.png.png20.keyName,
-        ),
-        Product(
-          key: 21,
-          name: S.current.fruit_tea_wintermelon,
-          country: "Vietnam",
-          price: 20000,
-          image: Assets.png.png21.keyName,
-        ),
-      ],
-      S.current.juice_drink: [
-        Product(
-          key: 22,
-          name: S.current.juice_guava,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png22.keyName,
-        ),
-        Product(
-          key: 23,
-          name: S.current.juice_pineapple,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png23.keyName,
-        ),
-        Product(
-          key: 24,
-          name: S.current.juice_watermelon,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png24.keyName,
-        ),
-        Product(
-          key: 25,
-          name: S.current.juice_apple,
-          country: "Vietnam",
-          price: 35000,
-          image: Assets.png.png25.keyName,
-        ),
-        Product(
-          key: 26,
-          name: S.current.juice_orange,
-          country: "Vietnam",
-          price: 20000,
-          image: Assets.png.png26.keyName,
-        ),
-        Product(
-          key: 27,
-          name: S.current.juice_passion,
-          country: "Vietnam",
-          price: 20000,
-          image: Assets.png.png27.keyName,
-        ),
-      ],
-      S.current.smoothie_drink: [
-        Product(
-          key: 28,
-          name: S.current.smoothie_avocado,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png28.keyName,
-        ),
-        Product(
-          key: 29,
-          name: S.current.smoothie_sapoche,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png29.keyName,
-        ),
-        Product(
-          key: 30,
-          name: S.current.smoothie_strawberry,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png30.keyName,
-        ),
-        Product(
-          key: 31,
-          name: S.current.smoothie_soursop,
-          country: "Vietnam",
-          price: 30000,
-          image: Assets.png.png31.keyName,
-        ),
-      ],
-      S.current.ice_blended_drink: [
-        Product(
-          key: 32,
-          name: S.current.blend_blueberry,
-          country: "Vietnam",
-          price: 35000,
-          image: Assets.png.png32.keyName,
-        ),
-        Product(
-          key: 33,
-          name: S.current.blend_cacao_milk,
-          country: "Vietnam",
-          price: 35000,
-          image: Assets.png.png33.keyName,
-        ),
-      ],
-      S.current.yaourt_soda_drink: [
-        Product(
-          key: 34,
-          name: S.current.yaourt_crushed_ice,
-          country: "Vietnam",
-          price: 20000,
-          image: Assets.png.png34.keyName,
-        ),
-        Product(
-          key: 35,
-          name: S.current.yaourt_blueberry,
-          country: "Vietnam",
-          price: 25000,
-          image: Assets.png.png35.keyName,
-        ),
-        Product(
-          key: 36,
-          name: S.current.yaourt_passion,
-          country: "Vietnam",
-          price: 20000,
-          image: Assets.png.png36.keyName,
-        ),
-        Product(
-          key: 37,
-          name: S.current.soda_lemon,
-          country: "Vietnam",
-          price: 35000,
-          image: Assets.png.png37.keyName,
-        ),
-      ],
-
-    };
-
+    productsByFilter = {};
+    productsByCategoryId = {};
 
     notifyListeners();
   }
@@ -380,325 +475,9 @@ class HomeScreenVm extends ChangeNotifier {
   int _currentPage = 0;
   bool _isNext = true;
 
-  Map<String, List<Product>> productsByFilter = {
-    S.current.best_seller: [
-
-      Product(
-        key: 6,
-        name: S.current.milk_tea_classic,
-        country: "Vietnam",
-        price: 25000,
-        image: Assets.png.png6.keyName,
-      ),
-      Product(
-        key: 7,
-        name: S.current.milk_tea_chocolate,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png7.keyName,
-      ),
-      Product(
-        key: 36,
-        name: S.current.yaourt_passion,
-        country: "Vietnam",
-        price: 20000,
-        image: Assets.png.png36.keyName,
-      ),
-      Product(
-        key: 37,
-        name: S.current.soda_lemon,
-        country: "Vietnam",
-        price: 35000,
-        image: Assets.png.png37.keyName,),
-      Product(
-        key: 1,
-        name: S.current.coffee_ice,
-        country: "Vietnam",
-        price: 20000,
-        image: Assets.png.png1.keyName,
-      ),
-      Product(
-        key: 2,
-        name: S.current.milk_coffee_ice,
-        country: "Vietnam",
-        price: 25000,
-        image: Assets.png.png2.keyName,
-      ),
-    ],
-    S.current.coffee_drink: [
-      Product(
-        key: 1,
-        name: S.current.coffee_ice,
-        country: "Vietnam",
-        price: 20000,
-        image: Assets.png.png1.keyName,
-      ),
-      Product(
-        key: 2,
-        name: S.current.milk_coffee_ice,
-        country: "Vietnam",
-        price: 25000,
-        image: Assets.png.png2.keyName,
-      ),
-      Product(
-        key: 3,
-        name: S.current.bac_xiu_ice,
-        country: "Vietnam",
-        price: 25000,
-        image: Assets.png.png3.keyName,
-      ),
-      Product(
-        key: 4,
-        name: S.current.cacao_milk_ice,
-        country: "Vietnam",
-        price: 25000,
-        image: Assets.png.png4.keyName,
-      ),
-      Product(
-        key: 5,
-        name: S.current.salted_coffee,
-        country: "Vietnam",
-        price: 25000,
-        image: Assets.png.png5.keyName,
-      ),
-    ],
-    S.current.milk_tea_drink: [
-      Product(
-        key: 6,
-        name: S.current.milk_tea_classic,
-        country: "Vietnam",
-        price: 25000,
-        image: Assets.png.png6.keyName,
-      ),
-      Product(
-        key: 7,
-        name: S.current.milk_tea_chocolate,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png7.keyName,
-      ),
-      Product(
-        key: 8,
-        name: S.current.milk_tea_butterfly_pea,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png8.keyName,
-      ),
-      Product(
-        key: 9,
-        name: S.current.milk_tea_young_rice,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png9.keyName,
-      ),
-      Product(
-        key: 10,
-        name: S.current.milk_tea_taro,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png10.keyName,
-      ),
-      Product(
-        key: 11,
-        name: S.current.latte_matcha,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png11.keyName,
-      ),
-      Product(
-        key: 12,
-        name: S.current.latte_taro,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png12.keyName,
-      ),
-      Product(
-        key: 13,
-        name: S.current.latte_chocolate,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png13.keyName,
-      ),
-      Product(
-        key: 14,
-        name: S.current.latte_strawberry_matcha,
-        country: "Vietnam",
-        price: 35000,
-        image: Assets.png.png14.keyName,
-      ),
-    ],
-    S.current.fruit_drink: [
-      Product(
-        key: 15,
-        name: S.current.fruit_tea_soursop,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png15.keyName,
-      ),
-      Product(
-        key: 16,
-        name: S.current.fruit_tea_pineapple_leaf,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png16.keyName,
-      ),
-      Product(
-        key: 17,
-        name: S.current.fruit_tea_peach_lemongrass,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png17.keyName,
-      ),
-      Product(
-        key: 18,
-        name: S.current.fruit_tea_lychee,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png18.keyName,
-      ),
-      Product(
-        key: 19,
-        name: S.current.fruit_tea_lipton_plum,
-        country: "Vietnam",
-        price: 20000,
-        image: Assets.png.png19.keyName,
-      ),
-      Product(
-        key: 20,
-        name: S.current.fruit_tea_kumquat,
-        country: "Vietnam",
-        price: 20000,
-        image: Assets.png.png20.keyName,
-      ),
-      Product(
-        key: 21,
-        name: S.current.fruit_tea_wintermelon,
-        country: "Vietnam",
-        price: 20000,
-        image: Assets.png.png21.keyName,
-      ),
-    ],
-    S.current.juice_drink: [
-      Product(
-        key: 22,
-        name: S.current.juice_guava,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png22.keyName,
-      ),
-      Product(
-        key: 23,
-        name: S.current.juice_pineapple,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png23.keyName,
-      ),
-      Product(
-        key: 24,
-        name: S.current.juice_watermelon,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png24.keyName,
-      ),
-      Product(
-        key: 25,
-        name: S.current.juice_apple,
-        country: "Vietnam",
-        price: 35000,
-        image: Assets.png.png25.keyName,
-      ),
-      Product(
-        key: 26,
-        name: S.current.juice_orange,
-        country: "Vietnam",
-        price: 20000,
-        image: Assets.png.png26.keyName,
-      ),
-      Product(
-        key: 27,
-        name: S.current.juice_passion,
-        country: "Vietnam",
-        price: 20000,
-        image: Assets.png.png27.keyName,
-      ),
-    ],
-    S.current.smoothie_drink: [
-      Product(
-        key: 28,
-        name: S.current.smoothie_avocado,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png28.keyName,
-      ),
-      Product(
-        key: 29,
-        name: S.current.smoothie_sapoche,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png29.keyName,
-      ),
-      Product(
-        key: 30,
-        name: S.current.smoothie_strawberry,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png30.keyName,
-      ),
-      Product(
-        key: 31,
-        name: S.current.smoothie_soursop,
-        country: "Vietnam",
-        price: 30000,
-        image: Assets.png.png31.keyName,
-      ),
-    ],
-    S.current.ice_blended_drink: [
-      Product(
-        key: 32,
-        name: S.current.blend_blueberry,
-        country: "Vietnam",
-        price: 35000,
-        image: Assets.png.png32.keyName,
-      ),
-      Product(
-        key: 33,
-        name: S.current.blend_cacao_milk,
-        country: "Vietnam",
-        price: 35000,
-        image: Assets.png.png33.keyName,
-      ),
-    ],
-    S.current.yaourt_soda_drink: [
-      Product(
-        key: 34,
-        name: S.current.yaourt_crushed_ice,
-        country: "Vietnam",
-        price: 20000,
-        image: Assets.png.png34.keyName,
-      ),
-      Product(
-        key: 35,
-        name: S.current.yaourt_blueberry,
-        country: "Vietnam",
-        price: 25000,
-        image: Assets.png.png35.keyName,
-      ),
-      Product(
-        key: 36,
-        name: S.current.yaourt_passion,
-        country: "Vietnam",
-        price: 20000,
-        image: Assets.png.png36.keyName,
-      ),
-      Product(
-        key: 37,
-        name: S.current.soda_lemon,
-        country: "Vietnam",
-        price: 35000,
-        image: Assets.png.png37.keyName,
-      ),
-    ],
-  };
+  Map<String, List<Product>> productsByFilter = {};
+  Map<int, List<Product>> productsByCategoryId =
+      {}; // New: Filter by category ID
 
   int get selectedFilterIndex => _selectedFilterIndex;
 
@@ -708,15 +487,14 @@ class HomeScreenVm extends ChangeNotifier {
 
   String get currentFilter => filters[_selectedFilterIndex];
 
-  List<Product> get allProducts =>
-      productsByFilter[currentFilter] ?? [];
+  List<Product> get filteredProducts => productsByFilter[currentFilter] ?? [];
 
-  int get totalPages => (allProducts.length / 6).ceil();
+  int get totalPages => (filteredProducts.length / 6).ceil();
 
   List<Product> get currentProducts {
     final startIndex = _currentPage * 6;
-    final endIndex = (startIndex + 6).clamp(0, allProducts.length);
-    return allProducts.sublist(startIndex, endIndex);
+    final endIndex = (startIndex + 6).clamp(0, filteredProducts.length);
+    return filteredProducts.sublist(startIndex, endIndex);
   }
 
   bool isLoading = false;
@@ -724,12 +502,85 @@ class HomeScreenVm extends ChangeNotifier {
   Future<void> selectFilter(int index) async {
     _selectedFilterIndex = index;
     _currentPage = 0;
-    isLoading =true;
+    isLoading = true;
     notifyListeners();
+
+    // Load products for selected filter if not already loaded
+    await _loadProductsForCurrentFilter();
+
     await Future.delayed(const Duration(milliseconds: 1100));
-    isLoading =false;
+    isLoading = false;
 
     notifyListeners();
+  }
+
+  /// Load products for current filter from database
+  Future<void> _loadProductsForCurrentFilter() async {
+    try {
+      final filterKey = filters[_selectedFilterIndex];
+
+      // If already loaded, skip
+      if (productsByFilter[filterKey] != null &&
+          productsByFilter[filterKey]!.isNotEmpty) {
+        return;
+      }
+
+      if (filterKey == "Best Seller" || filterKey == "Bán chạy") {
+        // Load best seller products (only active ones)
+        final bestSellerData = await ProductService.getBestSellerProducts();
+        productsByFilter[filterKey] = bestSellerData
+            .map((data) => ProductService.fromSupabaseData(data))
+            .toList();
+      } else {
+        // Find category by current language display name
+        final category = findCategoryByDisplayName(filterKey);
+
+        if (category != null && category.isActive && category.id != -1) {
+          // Use products already grouped by category ID
+          if (productsByCategoryId[category.id] != null) {
+            productsByFilter[filterKey] = productsByCategoryId[category.id]!;
+          } else {
+            productsByFilter[filterKey] = [];
+          }
+        } else {
+          // Category is not active, set empty list
+          productsByFilter[filterKey] = [];
+          debugPrint(
+              'Category $filterKey is not active, skipping products load');
+        }
+      }
+
+      debugPrint(
+          'Loaded ${productsByFilter[filterKey]?.length ?? 0} products for filter: $filterKey');
+    } catch (e) {
+      debugPrint('Error loading products for filter: $e');
+      _errorMessage = 'Lỗi tải sản phẩm: $e';
+    }
+  }
+
+  /// Get category display name by current language
+  String getCategoryDisplayName(Category category) {
+    if (selectedLang == "vi") {
+      return category.name;
+    } else {
+      return category.nameEn ??
+          category.name; // Fallback to Vietnamese if English not available
+    }
+  }
+
+  /// Find category by display name in current language
+  Category? findCategoryByDisplayName(String displayName) {
+    if (selectedLang == "vi") {
+      return _categories.firstWhere(
+        (cat) => cat.name == displayName && cat.isActive,
+        orElse: () => Category(id: -1, name: '', isActive: false),
+      );
+    } else {
+      return _categories.firstWhere(
+        (cat) => cat.nameEn == displayName && cat.isActive,
+        orElse: () => Category(id: -1, name: '', isActive: false),
+      );
+    }
   }
 
   void nextPage() {
@@ -760,7 +611,7 @@ class HomeScreenVm extends ChangeNotifier {
 
   /// 👆 Khi user click vào item
   void listClick(Product product, GlobalKey key) async {
-    final index = cartShop.indexWhere((item) => item.key == product.key);
+    final index = cartShop.indexWhere((item) => item.id == product.id);
     if (index != -1) {
       cartShop[index].amount += 1;
     } else {
@@ -768,38 +619,39 @@ class HomeScreenVm extends ChangeNotifier {
     }
     totalPrice = cartShop.fold(
       0.0,
-          (sum, item) => sum + item.price * item.amount,
+      (sum, item) => sum + item.price * item.amount,
     );
 
     notifyListeners();
 
     await runAddToCartAnimation(key); // animation cần GlobalKey
-    await cartKey.currentState!.runCartAnimation((++_cartQuantityItems).toString());
+    await cartKey.currentState!
+        .runCartAnimation((++_cartQuantityItems).toString());
     await saveCartShop();
-
   }
 
   double totalPrice = 0;
 
-
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
+
   Future<void> removeItem(int index) async {
     final removedProduct = cartShop[index];
     cartShop.removeAt(index);
     totalPrice = cartShop.fold(
       0.0,
-          (sum, item) => sum + item.price * item.amount,
+      (sum, item) => sum + item.price * item.amount,
     );
 
     notifyListeners();
     listKey.currentState?.removeItem(
       index,
-          (context, animation) => SizeTransition(
+      (context, animation) => SizeTransition(
         sizeFactor: animation,
         child: CartItemWidget(
+          vm:null,
           product: removedProduct,
           onRemove: () {},
-          totalMoney: 0,// Không cần xoá lại nữa
+          totalMoney: 0, // Không cần xoá lại nữa
         ),
       ),
       duration: const Duration(milliseconds: 300),
@@ -823,7 +675,8 @@ class HomeScreenVm extends ChangeNotifier {
     if (jsonString != null) {
       final List decoded = jsonDecode(jsonString);
       cartShop = decoded.map((e) => Product.fromJson(e)).toList();
-      totalPrice = cartShop.fold(0.0, (sum, item) => sum + item.price * item.amount);
+      totalPrice =
+          cartShop.fold(0.0, (sum, item) => sum + item.price * item.amount);
       notifyListeners();
     }
   }
@@ -840,89 +693,18 @@ class HomeScreenVm extends ChangeNotifier {
 
   int _currentIndex = 0;
 
-  final List<FeedbackModel> _feedbacks = [
-    FeedbackModel(
-      title: "AWESOME COFFEE",
-      reviewer: "MICHAEL T",
-      date: "03/10",
-      comment:
-      "fantastic, solid coffee! 10/10. highly recommend. this coffee is the best around",
-      rating: 5.0,
-    ),
-    FeedbackModel(
-      title: "OK ",
-      reviewer: "SARAH J",
-      date: "05/10",
-      comment: "loved the smooth flavor. would definitely buy again.",
-      rating: 4.5,
-    ),
-    FeedbackModel(
-      title: "Nice Coffee",
-      reviewer: "DAVID K",
-      date: "08/10",
-      comment: "nice coffee, but a bit too strong for me.",
-      rating: 3.5,
-    ),
-
-    /// Thêm mới
-    FeedbackModel(
-      title: "Excellent Aroma",
-      reviewer: "EMILY R",
-      date: "10/10",
-      comment: "the aroma was amazing, felt like a coffee shop at home!",
-      rating: 5.0,
-    ),
-    FeedbackModel(
-      title: "Good but Pricey",
-      reviewer: "JAMES L",
-      date: "12/10",
-      comment: "good flavor, but I think the price is a bit high.",
-      rating: 4.0,
-    ),
-    FeedbackModel(
-      title: "Không tệ",
-      reviewer: "NGUYỄN VĂN A",
-      date: "14/10",
-      comment: "Cà phê uống ổn, nhưng hơi đắng hơn mình mong đợi.",
-      rating: 3.0,
-    ),
-    FeedbackModel(
-      title: "Rất ngon",
-      reviewer: "TRẦN THỊ B",
-      date: "16/10",
-      comment: "Cà phê thơm ngon, vị đậm đà. Sẽ mua lại nhiều lần.",
-      rating: 4.5,
-    ),
-    FeedbackModel(
-      title: "Perfect Morning Coffee",
-      reviewer: "CHRIS P",
-      date: "18/10",
-      comment: "this coffee makes my mornings perfect. smooth and strong.",
-      rating: 5.0,
-    ),
-    FeedbackModel(
-      title: "Ổn áp",
-      reviewer: "PHẠM MINH C",
-      date: "20/10",
-      comment: "Uống khá ổn, giao hàng nhanh, sẽ ủng hộ tiếp.",
-      rating: 4.0,
-    ),
-    FeedbackModel(
-      title: "Too Bitter",
-      reviewer: "LINDA M",
-      date: "22/10",
-      comment: "coffee was too bitter for my taste, but still drinkable.",
-      rating: 2.5,
-    ),
-  ];
-
-
-
-  List<FeedbackModel> get feedbacks => _feedbacks;
+  // _feedbacks sẽ được load từ database
 
   int get currentIndex => _currentIndex;
 
-  FeedbackModel get currentFeedback => _feedbacks[_currentIndex];
+  FeedbackModel get currentFeedback => _feedbacks.isNotEmpty
+      ? _feedbacks[_currentIndex]
+      : FeedbackModel(
+          title: "LOADING...",
+          reviewer: "System",
+          date: DateTime.now().toString().split(' ')[0],
+          comment: "Loading feedbacks from database...",
+          rating: 5.0);
 
   bool lockNext = false;
   bool lockPre = true; // ban đầu ở index 0 thì ko thể previous
@@ -951,14 +733,9 @@ class HomeScreenVm extends ChangeNotifier {
     lockNext = _currentIndex == _feedbacks.length - 1;
   }
 
-
   String selectedLang = 'vi';
 
-  final languages = [
-    'en',
-    'vi'
-  ];
-
+  final languages = ['en', 'vi'];
 
   Locale _locale = const Locale('vi');
 
@@ -986,14 +763,14 @@ class HomeScreenVm extends ChangeNotifier {
     MyApp.setLocale(context, _locale);
     // html.window.location.reload();
 
-
-    init( );
+    init();
 
     scrollToTarget(home);
     await clearCartShop();
 
+    // Refresh data from database with new language
+    await refreshData();
 
-    init( );
     notifyListeners();
   }
 
@@ -1003,7 +780,7 @@ class HomeScreenVm extends ChangeNotifier {
   final GlobalKey ads = GlobalKey();
   final GlobalKey feedback = GlobalKey();
   final GlobalKey<ExpandableRevealPanelState> panelKey =
-  GlobalKey<ExpandableRevealPanelState>();
+      GlobalKey<ExpandableRevealPanelState>();
 
   Future<void> scrollToTarget(GlobalKey key) async {
     final context = key.currentContext;
@@ -1029,6 +806,7 @@ class HomeScreenVm extends ChangeNotifier {
       throw 'Could not open the map.';
     }
   }
+
   Future<void> callPhoneNumber(String phoneNumber) async {
     final Uri telUri = Uri(scheme: 'tel', path: phoneNumber);
 

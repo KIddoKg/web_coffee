@@ -1,14 +1,15 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:injectable/injectable.dart';
+import 'package:xanh_coffee/screens/admin/admin_main_screen.dart';
+
 import 'package:xanh_coffee/screens/empty/emptyPage.dart';
 import 'package:xanh_coffee/screens/home/home_screen.dart';
 import 'package:xanh_coffee/share/app_imports.dart';
 
-import '../screens/home_move.dart';
 
+import '../screens/home_move.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final NavigatorState navigatorState = navigatorKey.currentState!;
@@ -22,21 +23,18 @@ class AppRoute {
     switch (name) {
       case ScreenName.root:
         if (args is Map<String, dynamic>) {
-          Map<String, dynamic>? payload = args['payload']; // Get 'id' from the map
+          Map<String, dynamic>? payload =
+              args['payload']; // Get 'id' from the map
 
-          return _materialPage(
-
-              HomeScreenAdaptive(
-
-              ),
-              settings);
+          return _materialPage(HomeScreenAdaptive(), settings);
         }
 
-        return _materialPage(
-            HomeScreenAdaptive(
+        return _materialPage(HomeScreenAdaptive(), settings);
 
-            ),
-            settings);
+      case ScreenName.admin:
+        return _materialPage(AdminMainScreen(), settings);
+
+
     }
 
     return _materialPage(const EmptyPage(), settings);

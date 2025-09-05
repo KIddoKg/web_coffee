@@ -11,6 +11,19 @@ extension DoubleNumberExtension on double {
   }
 }
 
+extension DateStringExtension on String {
+  /// Chuyển ISO string "2025-2-10T00:00:00" → "10/02/2025"
+  String toFormattedDate({String format = 'dd/MM/yyyy'}) {
+    try {
+      final dateTime = DateTime.parse(this);
+      return DateFormat(format).format(dateTime);
+    } catch (e) {
+      // Nếu parse lỗi, trả về chính string gốc
+      return this;
+    }
+  }
+}
+
 extension NumberFormatting on num {
   /// Định dạng số thành dạng có dấu phẩy phân cách hàng nghìn
   String formatWithCommas() {

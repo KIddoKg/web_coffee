@@ -12,9 +12,14 @@ class _AllProductWidget extends StatelessWidget {
     return Consumer<HomeScreenVm>(builder: (context, vm, child) {
       final int gridItemCount = 6;
       final List<Product?> displayProducts =
-          List<Product?>.from(vm.currentProducts)
-            ..addAll(List<Product?>.filled(
-                gridItemCount - vm.currentProducts.length, null));
+      List<Product?>.from(vm.currentProducts.reversed) // 👈 đảo ngược list
+        ..addAll(
+          List<Product?>.filled(
+            gridItemCount - vm.currentProducts.length,
+            null,
+          ),
+        );
+
       return Padding(
         padding: AppStyle.padding_LR_16().copyWith(
             left: width < 1200 ? 0 : width * 0.15,
@@ -79,44 +84,125 @@ class _AllProductWidget extends StatelessWidget {
                   /// Filter buttons
                   const SizedBox(height: 48),
 
+                  /// Refresh button (for web/desktop)
+                  // if (!vm.isLoadingProducts && vm.errorMessage == null)
+                  //   Align(
+                  //     alignment: Alignment.centerRight,
+                  //     child: IconButton(
+                  //       onPressed: () => vm.refreshData(),
+                  //       icon: Icon(
+                  //         Icons.refresh,
+                  //         color: AppStyle.primaryGreen_0_81_49,
+                  //       ),
+                  //       tooltip: 'Làm mới dữ liệu',
+                  //     ),
+                  //   ),
+                  //
+                  // const SizedBox(height: 16),
+
                   /// Product grid with animation
                   ///
                   Stack(
                     children: [
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 400),
-                        transitionBuilder: (child, animation) {
-                          // Chỉ animate child mới, child cũ biến mất luôn
-                          return SlideTransition(
-                            position: Tween<Offset>(
-                              begin: vm.isNext ? const Offset(1, 0) : const Offset(-1, 0),
-                              end: Offset.zero,
-                            ).animate(animation),
-                            child: child,
-                          );
-                        },
-                        layoutBuilder: (currentChild, previousChildren) {
-                          // Không giữ child cũ, chỉ show child mới
-                          return currentChild ?? const SizedBox();
-                        },
-                        child: GridView.builder(
-                          key: ValueKey<int>(vm.currentPage),
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: gridItemCount,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: width < 800 ? 2 : 3,
-                            crossAxisSpacing: 64,
-                            mainAxisSpacing: 16,
-                            mainAxisExtent: 350,
+                      // Error message
+                      if (vm.errorMessage != null)
+                        Container(
+                          height: 400,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.error_outline,
+                                  size: 64,
+                                  color: Colors.grey[400],
+                                ),
+                                SizedBox(height: 16),
+                                Text(
+                                  vm.errorMessage!,
+                                  style: KSTheme.of(context)
+                                      .style
+                                      .ts14w400
+                                      .copyWith(
+                                        color: Colors.grey[600],
+                                      ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 16),
+                                ElevatedButton(
+                                  onPressed: () => vm.refreshData(),
+                                  child: Text('Thử lại'),
+                                ),
+                              ],
+                            ),
                           ),
-                          itemBuilder: (context, index) {
-                            final product = displayProducts[index];
-                            if (product == null) return const SizedBox();
-                            return ProductCard(product: product, onTap: vm.listClick);
+                        )
+                      // Loading state
+                      else if (vm.isLoadingProducts)
+                        Container(
+                          height: 400,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircularProgressIndicator(
+                                  color: AppStyle.primaryGreen_0_81_49,
+                                ),
+                                SizedBox(height: 16),
+                                Text(
+                                  'Đang tải sản phẩm...',
+                                  style: KSTheme.of(context)
+                                      .style
+                                      .ts14w400
+                                      .copyWith(
+                                        color: AppStyle.primaryGrayWord,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      // Product grid
+                      else
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 400),
+                          transitionBuilder: (child, animation) {
+                            // Chỉ animate child mới, child cũ biến mất luôn
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: vm.isNext
+                                    ? const Offset(1, 0)
+                                    : const Offset(-1, 0),
+                                end: Offset.zero,
+                              ).animate(animation),
+                              child: child,
+                            );
                           },
+                          layoutBuilder: (currentChild, previousChildren) {
+                            // Không giữ child cũ, chỉ show child mới
+                            return currentChild ?? const SizedBox();
+                          },
+                          child: GridView.builder(
+                            key: ValueKey<int>(vm.currentPage),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: gridItemCount,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: width < 800 ? 2 : 3,
+                              crossAxisSpacing: 64,
+                              mainAxisSpacing: 16,
+                              mainAxisExtent: 350,
+                            ),
+                            itemBuilder: (context, index) {
+                              final product = displayProducts[index];
+                              if (product == null) return const SizedBox();
+                              return ProductCard(
+                                vm: vm,
+                                  product: product, onTap: vm.listClick);
+                            },
+                          ),
                         ),
-                      ),
 
                       // Loading overlay
                       // if (vm.isLoading)
@@ -134,29 +220,27 @@ class _AllProductWidget extends StatelessWidget {
                       //       ),
                       //     ),
                       //   )
-
                     ],
                   ),
 
-
                   /// Prev / Next
                   // if (vm.totalPages > 1)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          onPressed: vm.currentPage > 0 ? vm.prevPage : null,
-                          icon: const Icon(Icons.arrow_back),
-                        ),
-                        Text("${vm.currentPage + 1} / ${vm.totalPages}"),
-                        IconButton(
-                          onPressed: vm.currentPage < vm.totalPages - 1
-                              ? vm.nextPage
-                              : null,
-                          icon: const Icon(Icons.arrow_forward),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: vm.currentPage > 0 ? vm.prevPage : null,
+                        icon: const Icon(Icons.arrow_back),
+                      ),
+                      Text("${vm.currentPage + 1} / ${vm.totalPages}"),
+                      IconButton(
+                        onPressed: vm.currentPage < vm.totalPages - 1
+                            ? vm.nextPage
+                            : null,
+                        icon: const Icon(Icons.arrow_forward),
+                      ),
+                    ],
+                  ),
                 ],
               ),
               SizedBox(
@@ -173,11 +257,13 @@ class _AllProductWidget extends StatelessWidget {
 /// 🟤 Product Card widget
 class ProductCard extends StatefulWidget {
   final Product product; // 👈 Thêm model Product
+  final HomeScreenVm vm;
   final void Function(Product, GlobalKey) onTap; // 👈 callback nhận Product
 
   const ProductCard({
     super.key,
     required this.product,
+    required this.vm,
     required this.onTap,
   });
 
@@ -207,8 +293,7 @@ class _ProductCardState extends State<ProductCard> {
             // 📸 Hình sản phẩm
             Expanded(
               child: ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(16)),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                 child: Container(
                   key: widgetKey, // 👈 gắn GlobalKey để lấy RenderBox
                   decoration: BoxDecoration(
@@ -216,15 +301,35 @@ class _ProductCardState extends State<ProductCard> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Padding(
-                    padding:
-                        AppStyle.padding_TB_16().copyWith(top: 8, bottom: 8),
+                    padding: AppStyle.padding_TB_16().copyWith(top: 8, bottom: 8),
                     child: Center(
-                      child: Image.asset(widget.product.image),
+                      child: Image.network(
+                        widget.product.image,
+                        fit: BoxFit.contain,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child; // ✅ Ảnh đã load xong
+                          }
+                          return const SizedBox(
+                            // width: 40,
+                            // height: 40,
+                            child: Center(
+                              child: LoadingLottie()
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) => const Icon(
+                          Icons.broken_image,
+                          size: 40,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
+
             const SizedBox(height: 8),
 
             // 🌍 Quốc gia
@@ -243,7 +348,8 @@ class _ProductCardState extends State<ProductCard> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                widget.product.name,
+                widget.vm.selectedLang == "vi" ?
+                widget.product.name : widget.product.nameEnglish,
                 maxLines: 1,
                 style: KSTheme.of(context).style.ts24w700.copyWith(
                       color: AppStyle.primaryGreen_0_81_49,

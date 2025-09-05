@@ -144,7 +144,7 @@ class _HeaderWidgetState extends State<_HeaderWidget>
                                         itemBuilder: (context, index, animation) {
                                           return  SizeTransition(
                                             sizeFactor: animation,
-                                            child: CartItemWidget(
+                                            child: CartItemWidget(vm:vm,
                                               product: vm.cartShop[index],
                                               onRemove: () => vm.removeItem(index),
                                               totalMoney: double.parse((vm.cartShop[index].amount * vm.cartShop[index].price).toString()),
@@ -170,11 +170,15 @@ class _HeaderWidgetState extends State<_HeaderWidget>
                                             username: "0903383236",
                                             message: (){
                                               final productLines = vm.cartShop.map((p) =>
-                                              "${p.name} - ${p.price}₫ x${p.amount}"
+                                              "${ vm.selectedLang == "vi" ? p.name :p.nameEnglish} - ${p.price}₫ x${p.amount}"
                                               ).join('\n');
 
                                               // Tính tổng tiền
-                                              final total = vm.cartShop.fold<int>(0, (sum, p) => sum + p.price * p.amount);
+                                              final total = vm.cartShop.fold<double>(
+                                                0,
+                                                    (sum, p) => sum + p.price * p.amount,
+                                              );
+
                                               final message = "$productLines\nTổng tiền: $total₫";
                                               cartMenuKeyA.currentState?.closeMenu();
                                               return (message);
@@ -267,12 +271,14 @@ class CartItemWidget extends StatelessWidget {
   final Product product;
   final VoidCallback onRemove;
   final double totalMoney;
+  final HomeScreenVm? vm;
 
   const CartItemWidget({
     Key? key,
     required this.product,
     required this.onRemove,
     required this.totalMoney,
+    required this.vm,
   }) : super(key: key);
 
   @override
@@ -289,7 +295,7 @@ class CartItemWidget extends StatelessWidget {
             // Hình ảnh
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
+              child: Image.network(
                 product.image,
                 width: 50,
                 height: 50,
@@ -305,7 +311,7 @@ class CartItemWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.name,
+                   vm?.selectedLang == "vi" ? product.name : product.nameEnglish,
                     style: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),
                   ),

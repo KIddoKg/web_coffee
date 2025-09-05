@@ -11,10 +11,13 @@ class _FeedbackWidget extends StatelessWidget {
 
     return Consumer<HomeScreenVm>(builder: (context, vm, child) {
       final feedback = vm.currentFeedback;
+
       return Container(
         color: AppStyle.primaryGreen_0_81_49.withOpacity(0.1),
         child: Padding(
-          padding: AppStyle.padding_LR_16().copyWith(left: width < 1200 ? 0 : width*0.15, right:  width < 1200 ? 0 : width*0.15),
+          padding: AppStyle.padding_LR_16().copyWith(
+              left: width < 1200 ? 0 : width * 0.15,
+              right: width < 1200 ? 0 : width * 0.15),
           child: Padding(
             padding: AppStyle.padding_LR_64(),
             child: Column(
@@ -73,51 +76,60 @@ class _FeedbackWidget extends StatelessWidget {
                               KSText(
                                 feedback.title.toUpperCase(),
                                 maxLines: 1,
-                                style: KSTheme.of(context).style.ts24w700.copyWith(
-                                      color: AppStyle.blackLite,
-                                    ),
+                                style:
+                                    KSTheme.of(context).style.ts24w700.copyWith(
+                                          color: AppStyle.blackLite,
+                                        ),
                               ),
                               const SizedBox(height: 16),
                               KSText(
                                 '“ ${feedback.comment} ”',
                                 textAlign: TextAlign.center,
                                 maxLines: 3,
-                                style: KSTheme.of(context).style.ts26w300.copyWith(
-                                    color: AppStyle.primaryGrayWord,
-                                    fontFamily: FontFamily.roboto),
+                                style: KSTheme.of(context)
+                                    .style
+                                    .ts26w300
+                                    .copyWith(
+                                        color: AppStyle.primaryGrayWord,
+                                        fontFamily: FontFamily.roboto),
                               ),
                               const SizedBox(height: 64),
                               Spacer(),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   // Left arrow
 
                                   CircleAvatar(
                                     backgroundColor: Colors.white,
                                     child: IconButton(
-                                      hoverColor:AppStyle.primaryGreen_0_81_49.withOpacity(0.1),
-
-                                      icon:  Icon(Icons.arrow_back, color: AppStyle.primaryGreen_0_81_49,),
-                                      onPressed:vm.lockPre ? null: () =>
-                                        vm.previousFeedback(),
-
+                                      hoverColor: AppStyle.primaryGreen_0_81_49
+                                          .withOpacity(0.1),
+                                      icon: Icon(
+                                        Icons.arrow_back,
+                                        color: AppStyle.primaryGreen_0_81_49,
+                                      ),
+                                      onPressed: vm.lockPre
+                                          ? null
+                                          : () => vm.previousFeedback(),
                                     ),
                                   ),
-
 
                                   // Name and date
                                   Column(
                                     children: [
                                       Text(
                                         feedback.reviewer.toUpperCase(),
-                                        style: KSTheme.of(context).style.ts14w700.copyWith(
-                                          color: AppStyle.blackLite,
-                                            fontFamily: FontFamily.roboto
-                                        ),
+                                        style: KSTheme.of(context)
+                                            .style
+                                            .ts14w700
+                                            .copyWith(
+                                                color: AppStyle.blackLite,
+                                                fontFamily: FontFamily.roboto),
                                       ),
                                       Text(
-                                        feedback.date,
+                                        feedback.date.toFormattedDate(),
                                         style: const TextStyle(
                                           color: Colors.grey,
                                           fontSize: 12,
@@ -130,13 +142,17 @@ class _FeedbackWidget extends StatelessWidget {
                                   CircleAvatar(
                                     backgroundColor: Colors.white,
                                     child: IconButton(
-                                      hoverColor:AppStyle.primaryGreen_0_81_49.withOpacity(0.1),
-
-
-                                      icon:   Icon(Icons.arrow_forward, color: AppStyle.primaryGreen_0_81_49,),
-                                      onPressed:vm.lockNext ? null: () {
-                                        vm.nextFeedback();
-                                      },
+                                      hoverColor: AppStyle.primaryGreen_0_81_49
+                                          .withOpacity(0.1),
+                                      icon: Icon(
+                                        Icons.arrow_forward,
+                                        color: AppStyle.primaryGreen_0_81_49,
+                                      ),
+                                      onPressed: vm.lockNext
+                                          ? null
+                                          : () {
+                                              vm.nextFeedback();
+                                            },
                                     ),
                                   ),
                                 ],

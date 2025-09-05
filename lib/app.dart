@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:xanh_coffee/router/router_app.dart';
 import 'package:xanh_coffee/router/router_string.dart';
+import 'package:xanh_coffee/share/app_imports.dart';
 import 'package:xanh_coffee/share/share_widget.dart';
 import 'package:xanh_coffee/share/size_configs.dart';
 import 'package:xanh_coffee/theme/ks_theme.dart';
@@ -13,10 +14,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:sizer/sizer.dart';
 
-
 import 'generated/l10n.dart';
 import 'helper/di/di.dart';
-
 
 class MyApp extends StatefulWidget {
   final bool shouldShowDebugButton;
@@ -31,7 +30,6 @@ class MyApp extends StatefulWidget {
     state?.updateLocale(newLocale);
   }
 
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -43,13 +41,23 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   // NotificationServicesFireBase _notificationServicesFireBase = NotificationServicesFireBase();
   Locale _locale = const Locale('vi');
 
+  String _getInitialRoute() {
+    if (kIsWeb) {
+      // Lấy URL hiện tại từ browser
+      final currentUrl = Uri.base.path;
+      // Nếu URL là /admin, return admin route
+      if (currentUrl == '/admin') {
+        return ScreenName.admin;
+      }
+    }
+    return ScreenName.root;
+  }
+
   void updateLocale(Locale newLocale) {
     setState(() {
       _locale = newLocale;
     });
   }
-
-
 
   @override
   void initState() {
@@ -59,7 +67,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
     SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.immersiveSticky,
     );
-      SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
     // }
   }
 
@@ -77,6 +85,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
     }
     if (state == AppLifecycleState.resumed) {}
   }
+
   //
   @override
   Widget build(BuildContext context) {
@@ -84,44 +93,50 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
 
     return OverlaySupport.global(
       child: KSTheme(
-        child:Sizer(
-          builder: (context, orientation, screenType) {
+        child: Sizer(builder: (context, orientation, screenType) {
           return MaterialApp(
-
-          // Cần có dòng này
-          navigatorObservers: [BotToastNavigatorObserver()],
-          debugShowCheckedModeBanner: false,
-          navigatorKey: navigatorKey,
-          builder: (context, child) {
-            return  BotToastInit()(
-              context,
-              MediaQuery(
-                data: MediaQuery.of(context).copyWith(
-                  textScaleFactor: 1, // Ngăn không cho phóng đại văn bản
-                ),
-                child: Stack(
-                  children: [
-                    child ?? const SizedBox.shrink(),
-                    if (widget.shouldShowDebugButton)
-                      KSFloatingDebugButton(
-                        context: context,
-                        shouldShowDebugButton: widget.shouldShowDebugButton,
-                      ),
-                  ],
-                ),
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: AppStyle.primaryGreen_0_81_49
+                    .withOpacity(0.1), // 👈 lấy green[300] làm seed
+                brightness: Brightness.light,
               ),
-            );
-          },
+              useMaterial3: true,
+            ),
 
-          // navigatorObservers: [ChuckerFlutter.navigatorObserver],
-          // navigatorObservers: [BotToastNavigatorObserver()],
-          initialRoute: ScreenName.root,
-          onGenerateRoute: di<AppRoute>().generateRoute,
-          localizationsDelegates: _localizationDelegates(),
-          supportedLocales: _supportedLocales(),
-                            );
-        }
+            // Cần có dòng này
+            navigatorObservers: [BotToastNavigatorObserver()],
+            debugShowCheckedModeBanner: false,
+            navigatorKey: navigatorKey,
+            builder: (context, child) {
+              return BotToastInit()(
+                context,
+                MediaQuery(
+                  data: MediaQuery.of(context).copyWith(
+                    textScaleFactor: 1, // Ngăn không cho phóng đại văn bản
+                  ),
+                  child: Stack(
+                    children: [
+                      child ?? const SizedBox.shrink(),
+                      if (widget.shouldShowDebugButton)
+                        KSFloatingDebugButton(
+                          context: context,
+                          shouldShowDebugButton: widget.shouldShowDebugButton,
                         ),
+                    ],
+                  ),
+                ),
+              );
+            },
+
+            // navigatorObservers: [ChuckerFlutter.navigatorObserver],
+            // navigatorObservers: [BotToastNavigatorObserver()],
+            initialRoute:  ScreenName.root,
+            onGenerateRoute: di<AppRoute>().generateRoute,
+            localizationsDelegates: _localizationDelegates(),
+            supportedLocales: _supportedLocales(),
+          );
+        }),
       ),
     );
   }
@@ -143,7 +158,6 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
       Locale('en', ''), // Hỗ trợ tiếng Anh
     ];
   }
-
 
 // @override
   // Widget build(BuildContext context) {

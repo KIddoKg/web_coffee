@@ -1,13 +1,13 @@
-import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:xanh_coffee/screens/admin/viewModel/admin_screen_vm.dart';
 import 'package:xanh_coffee/screens/home/viewModel/home_screen_vm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../config/env.dart';
 import '../../router/router_app.dart';
 import '../../screens/home_mobile/viewModel/home_mobile_screen_vm.dart';
+import '../../services/supabase/services_supabase.dart';
 import '../widget/util.dart';
-
 
 // dđ
 final di = GetIt.asNewInstance()..allowReassignment = true;
@@ -15,7 +15,8 @@ final di = GetIt.asNewInstance()..allowReassignment = true;
 @injectableInit
 Future<void> initDI(ENVType env) async {
   final SharedPreferences sharedPreferences =
-  await SharedPreferences.getInstance();
+      await SharedPreferences.getInstance();
+
   di
     ..registerLazySingleton<ENVType>(() => env)
     ..registerFactory<Env>(() => env.toENV())
@@ -23,6 +24,7 @@ Future<void> initDI(ENVType env) async {
     ..registerLazySingleton<WidgetUtil>(() => WidgetUtil())
     ..registerLazySingleton<AppRoute>(() => AppRoute())
     ..registerLazySingleton<HomeScreenVm>(() => HomeScreenVm())
+    ..registerLazySingleton<AdminScreenVm>(() => AdminScreenVm())
     ..registerLazySingleton<HomeMobileScreenVm>(() => HomeMobileScreenVm());
   // ..registerFactory<FlutterSecureStorage>(() => const FlutterSecureStorage());
   // ..registerLazySingleton<CommonInterceptor>(

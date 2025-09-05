@@ -23,8 +23,6 @@ import 'package:lottie/lottie.dart';
 
 import '../home/model/product_model.dart';
 
-
-
 part './widgets/header_widget.dart';
 part './widgets/confirm_widget.dart';
 part './widgets/footer_widget.dart';
@@ -33,6 +31,7 @@ part './widgets/all_product_widget.dart';
 part './widgets/ads_widget.dart';
 part './widgets/feedback_widget.dart';
 part './widgets/app_food_widget.dart';
+part './widgets/qrcode_access_widget.dart';
 
 class HomeMobileScreen extends StatefulWidget {
   const HomeMobileScreen({super.key});
@@ -65,28 +64,23 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
   late final ScrollController _scrollController;
   @override
   void initState() {
-
     _scrollController = ScrollController();
     // TODO: implement initState
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-
-
       // Lắng nghe scroll
       _scrollController.addListener(() {
-        
         // Gọi hàm ViewModel khi scroll
-
       });
       final vm = Provider.of<HomeMobileScreenVm>(context, listen: false);
 
-      vm.init( );
+      vm.init();
       vm.loadSavedLocale(context);
-
     });
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeMobileScreenVm>(
@@ -106,21 +100,20 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
           },
           child: KSScaffold(
             backgroundColor: AppStyle.whiteYellow,
-            onTap: (){
+            onTap: () {
               FocusScope.of(context).unfocus();
             },
             child: WebSmoothScroll(
-              controller:_scrollController,
+              controller: _scrollController,
               child: CustomScrollView(
                 controller: _scrollController,
                 slivers: [
-
                   const SliverToBoxAdapter(child: _HeaderWidget()),
+                  const SliverToBoxAdapter(child: _QRCodeAccessWidget()),
                   const SliverToBoxAdapter(child: _AllProductWidget()),
                   const SliverToBoxAdapter(child: _AppFoodWidget()),
                   const SliverToBoxAdapter(child: _AdsWidget()),
                   const SliverToBoxAdapter(child: _FeedbackWidget()),
-
                   const SliverToBoxAdapter(child: _ConfirmWidget()),
                   const SliverToBoxAdapter(child: _FooterWidget()),
                 ],
@@ -131,7 +124,4 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
       },
     );
   }
-
 }
-
-

@@ -158,8 +158,8 @@ class _HeaderWidgetState extends State<_HeaderWidget>
                                                       ).join('\n');
 
                                                       // Tính tổng tiền
-                                                      final total = vm.cartShop.fold<int>(0, (sum, p) => sum + p.price * p.amount);
-                                                      final message = "$productLines\nTổng tiền: $total₫";
+                                                      // final total = vm.cartShop.fold<int>(0, (sum, p) => sum + p.price * p.amount);
+                                                      final message = "$productLines\nTổng tiền: 0₫";
                                                       cartMenuKey.currentState?.closeMenu();
                                                       return (message);
 

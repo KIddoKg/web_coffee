@@ -20,15 +20,18 @@ class _AppFoodWidget extends StatelessWidget {
             padding: AppStyle.padding_LR_32(),
             child: Column(
 
+
+
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 SizedBox(height: 128,),
                 KSText(
                   textAlign: TextAlign.left,
                   S.current.title_app_food,
                   style: KSTheme.of(context)
                       .style
-                      .ts22w700
+                      .ts28w700
                       .copyWith(color: AppStyle.blackLite),
                 ),
                 SizedBox(
@@ -42,90 +45,22 @@ class _AppFoodWidget extends StatelessWidget {
                       fontFamily: FontFamily.roboto),
                 ),
                 Row(
-                  children: [
-                    Expanded(
+                  children: vm.qrCodes.map((app) {
+                    return Expanded(
                       child: Column(
                         children: [
-                          SizedBox(
-                            height: 64,
-                          ),
-                          Padding(
-                            padding: AppStyle.padding_LR_64(),
-                            child: Column(
-                              children: [
-                                Container(
-                                    color: AppStyle.primaryColorYellow_244_195_66,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(32.0),
-                                      child: Image.asset(Assets.png.pngBe.keyName,width: 200,),
-                                    )),
-                                SizedBox(
-                                  height: 16,
-                                ),
+                          SizedBox(height: 64),
+                          FoodAppCard(
+                            data: app,
+                            vm: vm,
 
-                                SizedBox(
-                                  width: 120,
-                                  child: KSButton(onTap: () {
-                                    vm.openLink("https://begroup.onelink.me/ZOqn/ujb96xd3");
-                                  },
-                                      height: 35,
-                                      radius: 16,
-                                      fontColor: AppStyle.whiteBg,
-                                      border: AppStyle.primaryColorYellow_244_195_66,
-                                      backgroundColor: AppStyle.primaryColorYellow_244_195_66,
-                                      S.current.order_now),
-                                )
-                              ],
-                            ),
-                          ),
-                      
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 64,
-                          ),
-                          Padding(
-                            padding: AppStyle.padding_LR_64(),
-                            child: Column(
-                              children: [
-                                ImageFiltered(
-                                  imageFilter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                                  child: Container(
-                                      color: AppStyle.primaryColorRed_219_89_59,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(32.0),
-                                        child: Image.asset(Assets.png.pngShoppe.keyName,width: 200,),
-                                      )),
-                                ),
-                                SizedBox(
-                                  height: 16,
-                                ),
-                                SizedBox(
-                                  width: 120,
-                                  child: KSButton(onTap: () {
-
-                                    vm.openLink("https://shopeefood.vn/");
-                                  },
-                                      height: 35,
-                                      lock: true,
-                                      radius: 16,
-                                      fontColor: AppStyle.whiteBg,
-                                      border: AppStyle.primaryColorRed_219_89_59,
-                                      backgroundColor: AppStyle.primaryColorRed_219_89_59,
-                                      S.current.order_now),
-                                )
-                              ],
-                            ),
                           ),
                         ],
                       ),
-                    )
-                  ],
+                    );
+                  }).toList(),
                 ),
+
 
                 SizedBox(height: 128,),
               ],
@@ -134,5 +69,65 @@ class _AppFoodWidget extends StatelessWidget {
         ),
       );
     });
+  }
+}
+Color parseColor(String hexColor) {
+  hexColor = hexColor.toUpperCase().replaceAll("#", "");
+  if (hexColor.length == 6) {
+    hexColor = "FF$hexColor"; // mặc định alpha = 100%
+  }
+  return Color(int.parse(hexColor, radix: 16));
+}
+
+class FoodAppCard extends StatelessWidget {
+   final QRCodeModel data;
+   final HomeScreenVm vm;
+
+  const FoodAppCard({
+    Key? key,
+    required this.data,
+    required this.vm,
+
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Widget cardContent = Container(
+      color: parseColor(data.color??"#fffffff"),
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Image.network(data.imageUrl ?? "", width: 200),
+      ),
+    );
+
+    if (data.isActive == false) {
+      cardContent = ImageFiltered(
+        imageFilter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: cardContent,
+      );
+    }
+
+    return Padding(
+      padding: AppStyle.padding_LR_32(),
+      child: Column(
+        children: [
+          cardContent,
+          SizedBox(height: 16),
+          SizedBox(
+            width: 190,
+            child: KSButton(
+              onTap: () => vm.openLink(data.linkUrl),
+              height: 35,
+              radius: 16,
+              lock: data.isActive == false,
+              fontColor:parseColor(data.color??"#fffffff"),
+              border: parseColor(data.color??"#fffffff"),
+              backgroundColor: Colors.white,
+              S.current.order_now,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
