@@ -21,7 +21,9 @@ import '../../share/app_imports.dart';
 import '../../share/text_style.dart';
 import 'package:lottie/lottie.dart';
 
+import '../home/model/blog_model.dart';
 import '../home/model/product_model.dart';
+import '../home/model/qrcode_model.dart';
 
 part './widgets/header_widget.dart';
 part './widgets/confirm_widget.dart';
@@ -109,7 +111,7 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
                 controller: _scrollController,
                 slivers: [
                   const SliverToBoxAdapter(child: _HeaderWidget()),
-                  const SliverToBoxAdapter(child: _QRCodeAccessWidget()),
+                  // const SliverToBoxAdapter(child: _QRCodeAccessWidget()),
                   const SliverToBoxAdapter(child: _AllProductWidget()),
                   const SliverToBoxAdapter(child: _AppFoodWidget()),
                   const SliverToBoxAdapter(child: _AdsWidget()),

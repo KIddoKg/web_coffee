@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:ui';
 import 'package:xanh_coffee/share/app_imports.dart';
 import '../../../services/supabase/blog_service.dart';
@@ -142,20 +143,36 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
   void _moveBlogUp(int? blogId) {
     if (blogId == null) return;
 
+    debugPrint('Di chuyển blog ID $blogId lên trên');
+    
     setState(() {
       _blogs = BlogService.moveBlogUpInList(_blogs, blogId);
       _hasChanges = true;
     });
+    
+    debugPrint('Thứ tự sau khi di chuyển:');
+    for (int i = 0; i < _blogs.length; i++) {
+      debugPrint('  $i: ID=${_blogs[i]['id']}, Title=${_blogs[i]['title']}');
+    }
+    
     _showSuccess('Di chuyển tạm thời. Nhấn Save để lưu!');
   }
 
   void _moveBlogDown(int? blogId) {
     if (blogId == null) return;
 
+    debugPrint('Di chuyển blog ID $blogId xuống dưới');
+    
     setState(() {
       _blogs = BlogService.moveBlogDownInList(_blogs, blogId);
       _hasChanges = true;
     });
+    
+    debugPrint('Thứ tự sau khi di chuyển:');
+    for (int i = 0; i < _blogs.length; i++) {
+      debugPrint('  $i: ID=${_blogs[i]['id']}, Title=${_blogs[i]['title']}');
+    }
+    
     _showSuccess('Di chuyển tạm thời. Nhấn Save để lưu!');
   }
 
@@ -164,11 +181,18 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
       newIndex -= 1;
     }
 
+    debugPrint('Reorder: từ vị trí $oldIndex đến vị trí $newIndex');
+
     setState(() {
       final item = _blogs.removeAt(oldIndex);
       _blogs.insert(newIndex, item);
       _hasChanges = true;
     });
+
+    debugPrint('Thứ tự sau khi reorder:');
+    for (int i = 0; i < _blogs.length; i++) {
+      debugPrint('  $i: ID=${_blogs[i]['id']}, Title=${_blogs[i]['title']}');
+    }
 
     _showSuccess('Thay đổi tạm thời. Nhấn Save để lưu!');
   }
@@ -180,7 +204,16 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
     try {
       setState(() {
         _isLoading = true;
+        _errorMessage = null;
       });
+
+      debugPrint('Bắt đầu lưu thay đổi với ${_blogs.length} blogs');
+      
+      // Debug: In ra thứ tự hiện tại
+      for (int i = 0; i < _blogs.length; i++) {
+        final blog = _blogs[i];
+        debugPrint('Blog $i: ID=${blog['id']}, Title=${blog['title']}');
+      }
 
       // Sử dụng phương thức mới để lưu thứ tự
       await BlogService.saveBlogOrder(_blogs);
@@ -190,6 +223,7 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
       // Tải lại để cập nhật trạng thái
       await _loadBlogs();
     } catch (e) {
+      debugPrint('Lỗi lưu thay đổi: $e');
       _showError('Lỗi lưu thay đổi: $e');
     } finally {
       setState(() {
@@ -280,7 +314,6 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final width = SizeConfig.screenWidth!;
-    final height = SizeConfig.screenHeight!;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Quản lý Blog'),
@@ -786,8 +819,7 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
                     //       : Colors.green[600],
                     //   tooltip: 'Di chuyển xuống',
                     // ),
-
-                    // View detail button
+                    //
                     // IconButton(
                     //   onPressed: () => _showBlogDetail(blog),
                     //   icon: const Icon(Icons.visibility),

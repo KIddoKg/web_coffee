@@ -25,35 +25,7 @@ class _FooterWidgetState extends State<_FooterWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                KSButton(
-                  height: 100,
-                  "Admin Dashboard",
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const AdminMainScreen(),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(width: 16),
-                KSButton(
-                  height: 100,
-                  backgroundColor: Colors.white,
-                  "Quản lý Sản phẩm",
-                  fontColor: Colors.brown,
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const ProductManagementWidget(),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
+
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(

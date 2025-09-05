@@ -454,45 +454,20 @@ class BlogService {
   static Future<void> saveBlogOrder(
       List<Map<String, dynamic>> currentOrder) async {
     try {
-      // Tạo map ID -> vị trí mới
-      Map<int, int> newPositions = {};
+      debugPrint('Bắt đầu lưu thứ tự blog với ${currentOrder.length} blogs');
+
+      // Cập nhật thứ tự cho từng blog
       for (int i = 0; i < currentOrder.length; i++) {
         final blogId = currentOrder[i]['id'] as int?;
         if (blogId != null) {
-          newPositions[blogId] = i;
+          await SupabaseService.from(_tableName)
+              .update({'order': i}).eq('id', blogId);
+
+          debugPrint('Cập nhật blog ID $blogId với order = $i');
         }
       }
 
-      // Lấy danh sách gốc từ database
-      final originalBlogs = await getAllBlogsRaw();
-
-      // Tạo danh sách các thay đổi cần thực hiện
-      List<Map<String, dynamic>> swapsNeeded = [];
-
-      for (int newPos = 0; newPos < currentOrder.length; newPos++) {
-        final currentBlogId = currentOrder[newPos]['id'] as int?;
-        final originalBlogAtPos = originalBlogs.length > newPos
-            ? originalBlogs[newPos]['id'] as int?
-            : null;
-
-        if (currentBlogId != null &&
-            originalBlogAtPos != null &&
-            currentBlogId != originalBlogAtPos) {
-          swapsNeeded.add({
-            'currentId': currentBlogId,
-            'targetId': originalBlogAtPos,
-            'position': newPos,
-          });
-        }
-      }
-
-      // Thực hiện các thay đổi
-      for (var swap in swapsNeeded) {
-        await swapBlogIds(swap['currentId'], swap['targetId']);
-      }
-
-      debugPrint(
-          'Lưu thứ tự blog thành công với ${swapsNeeded.length} thay đổi');
+      debugPrint('Lưu thứ tự blog thành công');
     } catch (e) {
       debugPrint('Lỗi lưu thứ tự blog: $e');
       rethrow;
