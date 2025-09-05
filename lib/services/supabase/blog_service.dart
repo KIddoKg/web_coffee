@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../models/blog_model.dart';
+import 'supabase_service.dart';
 
 class BlogService {
-  final SupabaseClient _supabase = Supabase.instance.client;
+  SupabaseClient get _supabase => SupabaseService.instance.client;
 
   // Get all blogs sorted by id (descending for newest first)
   Future<List<BlogModel>> getAllBlogs() async {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:xanh_coffee/screens/empty/emptyPage.dart';
 import 'package:xanh_coffee/screens/home/home_screen.dart';
+import 'package:xanh_coffee/screens/admin/admin_screen.dart';
 import 'package:xanh_coffee/share/app_imports.dart';
 
 import '../screens/home_move.dart';
@@ -37,6 +38,9 @@ class AppRoute {
 
             ),
             settings);
+      
+      case ScreenName.blogAdmin:
+        return _materialPage(const AdminScreen(), settings);
     }
 
     return _materialPage(const EmptyPage(), settings);

@@ -28,6 +28,7 @@ abstract class ScreenName {
   static const String fuelChart = '/fuelChart';
   static const String recordRouter = '/recordRouter';
   static const String settingAdmin = '/settingAdmin';
+  static const String blogAdmin = '/blogAdmin';
   static const String permission = '/permission';
   static const String cameraDetail = '/cameraDetail';
   static const String createExpense = '/createExpense';
