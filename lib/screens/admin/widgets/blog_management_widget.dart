@@ -144,17 +144,17 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
     if (blogId == null) return;
 
     debugPrint('Di chuyển blog ID $blogId lên trên');
-    
+
     setState(() {
       _blogs = BlogService.moveBlogUpInList(_blogs, blogId);
       _hasChanges = true;
     });
-    
+
     debugPrint('Thứ tự sau khi di chuyển:');
     for (int i = 0; i < _blogs.length; i++) {
       debugPrint('  $i: ID=${_blogs[i]['id']}, Title=${_blogs[i]['title']}');
     }
-    
+
     _showSuccess('Di chuyển tạm thời. Nhấn Save để lưu!');
   }
 
@@ -162,17 +162,17 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
     if (blogId == null) return;
 
     debugPrint('Di chuyển blog ID $blogId xuống dưới');
-    
+
     setState(() {
       _blogs = BlogService.moveBlogDownInList(_blogs, blogId);
       _hasChanges = true;
     });
-    
+
     debugPrint('Thứ tự sau khi di chuyển:');
     for (int i = 0; i < _blogs.length; i++) {
       debugPrint('  $i: ID=${_blogs[i]['id']}, Title=${_blogs[i]['title']}');
     }
-    
+
     _showSuccess('Di chuyển tạm thời. Nhấn Save để lưu!');
   }
 
@@ -208,7 +208,7 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
       });
 
       debugPrint('Bắt đầu lưu thay đổi với ${_blogs.length} blogs');
-      
+
       // Debug: In ra thứ tự hiện tại
       for (int i = 0; i < _blogs.length; i++) {
         final blog = _blogs[i];
@@ -388,7 +388,7 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
                 onChanged: _searchBlogs,
               ),
             ),
-        
+
             // Statistics and instructions
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -437,7 +437,7 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
                 ],
               ),
             ),
-        
+
             // Changes notification banner
             if (_hasChanges)
               Container(
@@ -482,7 +482,7 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
                   ],
                 ),
               ),
-        
+
             // Error message
             if (_errorMessage != null)
               Container(
@@ -515,7 +515,7 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
                   ],
                 ),
               ),
-        
+
             // Blog list
             Expanded(
               child: _buildBlogList(),
@@ -779,7 +779,6 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
                   ),
                 ),
 
-
                 // Actions
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -847,7 +846,9 @@ class _BlogManagementWidgetState extends State<BlogManagementWidget> {
                     ),
                   ],
                 ),
-                SizedBox(width: 32,),
+                SizedBox(
+                  width: 32,
+                ),
               ],
             ),
           ),
