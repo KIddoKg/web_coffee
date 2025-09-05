@@ -82,6 +82,7 @@ dependencies:
   add_to_cart_animation: ^2.0.4
   flutter_rating_bar: ^4.0.1
   web_smooth_scroll: ^2.0.0
+  supabase_flutter: ^2.6.0
 
 
 dev_dependencies:
